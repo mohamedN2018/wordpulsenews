@@ -7,9 +7,9 @@ name = "pypi"
 django = "*"
 pipreqs = "*"
 pillow = "*"
-python-decouple = "*"
 openai = "*"
 django-jazzmin = "*"
+python-decouple = "*"
 
 [dev-packages]
 
