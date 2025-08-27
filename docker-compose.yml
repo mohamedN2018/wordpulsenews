@@ -1,22 +1,12 @@
 version: '3.7'
-
 services:
-  newspluse:
-    build: .
-    container_name: newspluse_app
-    restart: always
-    volumes:
-      - ./:/usr/src/app
-    ports:
-      - "8080:80"   # تقدر تدخل على http://localhost:8080
-    command: >
-      gunicorn --chdir /usr/src/app
-               --access-logfile - 
-               --error-logfile - 
-               --bind 0.0.0.0:80 
-               newspluse.wsgi:application
-    environment:
-      - MAIN_DOMAIN=${MAIN_DOMAIN}
-      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
-      - YOUTUBE_API_KEY=${YOUTUBE_API_KEY}
-      - FB_ACCESS_TOKEN=${FB_ACCESS_TOKEN}
+    newspluse:
+      build: .
+      restart: always
+      volumes:
+        - ./:/usr/src/app
+      ports:
+        - 8080:80
+      expose:
+        - 80
+      command: "gunicorn --chdir /usr/src/app --access-logfile - --error-logfile - --bind 8080:80 newspluse.wsgi:application"
