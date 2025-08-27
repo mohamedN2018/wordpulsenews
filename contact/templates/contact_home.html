@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% if user_language == "ar" %}
+{% block content_ar %}
+<div class="container py-5" dir="rtl">
+    <h2 class="text-center mb-4">{% trans "اتصل بنا" %}</h2>
+                   <div class="social-icons">
+                <a href="https://www.youtube.com/channel/UCPP15i6IPmPFS8Il7aIP5Sw" target="_blank">
+                    <i class="fab fa-youtube"></i> {{ youtube_subscribers }} Subscribers
+                </a>
+            </div>
+
+            <div class="social-icons">
+                <a href="https://www.facebook.com/{{ fb_page_id }}" target="_blank">
+                    <i class="fab fa-facebook-f"></i> {{ fb_followers }} Followers
+                </a>
+            </div>
+    <form method="post" class="bg-light p-4 rounded shadow-sm">
+        {% csrf_token %}
+        <div class="form-group mb-3">
+            <label for="name" class="form-label">{% trans "الاسم" %}</label>
+            <input type="text" id="name" name="name" class="form-control" placeholder="ادخل اسمك" required>
+        </div>
+        <div class="form-group mb-3">
+            <label for="email" class="form-label">{% trans "البريد الإلكتروني" %}</label>
+            <input type="email" id="email" name="email" class="form-control" placeholder="example@email.com" required>
+        </div>
+        <div class="form-group mb-3">
+            <label for="message" class="form-label">{% trans "الرسالة" %}</label>
+            <textarea id="message" name="message" rows="5" class="form-control" placeholder="اكتب رسالتك هنا..." required></textarea>
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary px-5">{% trans "إرسال" %}</button>
+        </div>
+    </form>
+</div>
+
+
+
+
+{% endblock %}
+{% else %}
+{% block content_en %}
+<div class="container py-5" dir="ltr">
+    <h2 class="text-center mb-4">Contact Us</h2>
+               <div class="social-icons">
+                <a href="https://www.youtube.com/channel/UCPP15i6IPmPFS8Il7aIP5Sw" target="_blank">
+                    <i class="fab fa-youtube"></i> {{ youtube_subscribers }} Subscribers
+                </a>
+            </div>
+
+            <div class="social-icons">
+                <a href="https://www.facebook.com/{{ fb_page_id }}" target="_blank">
+                    <i class="fab fa-facebook-f"></i> {{ fb_followers }} Followers
+                </a>
+            </div>
+
+    <form method="post" class="bg-light p-4 rounded shadow-sm">
+        {% csrf_token %}
+        <div class="form-group mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" id="name" name="name" class="form-control" placeholder="Enter your name" required>
+        </div>
+        <div class="form-group mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" id="email" name="email" class="form-control" placeholder="example@email.com" required>
+        </div>
+        <div class="form-group mb-3">
+            <label for="message" class="form-label">Message</label>
+            <textarea id="message" name="message" rows="5" class="form-control" placeholder="Write your message..." required></textarea>
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary px-5">Send</button>
+        </div>
+    </form>
+</div>
+
+
+
+ 
+{% endblock %}
+{% endif %}

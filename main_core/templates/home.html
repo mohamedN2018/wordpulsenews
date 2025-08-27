@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% if LANGUAGE_CODE == 'ar' %}
+  {% block content_ar %}
+      <h2 class="mb-4">📌 أحدث الأخبار</h2>
+      <div class="row">
+          {% for article in latest_articles %}
+        {% if article.slug %}
+          <div class="col-md-4 mb-3">
+            <div class="card h-100">
+              {% if article.image %}
+                <img src="{{ article.image.url }}" class="card-img-top" alt="{{ article.title }}">
+              {% endif %}
+              <div class="card-body">
+                <h5 class="card-title">{{ article.title }}</h5>
+                <p class="card-text">{{ article.content|truncatewords:20 }}</p>
+                <a href="{% url 'main_core:article_detail' article.slug %}" class="btn btn-primary">اقرأ المزيد</a>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% empty %}
+        <p>لا توجد أخبار حاليا.</p>
+      {% endfor %}
+      </div>
+  {% endblock %}
+{% else %}
+  {% block content_en %}
+      <h2 class="mb-4">📌 Latest News</h2>
+      <div class="row">
+          {% for article in latest_articles %}
+        {% if article.slug %}
+          <div class="col-md-4 mb-3">
+            <div class="card h-100">
+              {% if article.image %}
+                <img src="{{ article.image.url }}" class="card-img-top" alt="{{ article.title }}">
+              {% endif %}
+              <div class="card-body">
+                <h5 class="card-title">{{ article.title }}</h5>
+                <p class="card-text">{{ article.content|truncatewords:20 }}</p>
+                <a href="{% url 'main_core:article_detail' article.slug %}" class="btn btn-primary">Read More</a>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% empty %}
+        <p>لا توجد أخبار حاليا.</p>
+      {% endfor %}
+      </div>
+  {% endblock %}
+{% endif %}
+
+
+
+
+
+{% comment %} {% if LANGUAGE_CODE == 'ar' %}
+  {% block content_ar %}
+      
+  {% endblock %}
+{% else %}
+  {% block content_en %}
+
+  {% endblock %}
+{% endif %} {% endcomment %}

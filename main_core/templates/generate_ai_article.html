@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% if LANGUAGE_CODE == 'ar' %}
+  {% block content_ar %}
+      <div class="card shadow p-4">
+         <h3>توليد مقال جديد في قسم: {{ category.name }}</h3>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="title">عنوان المقال:</label>
+                <input type="text" name="title" id="title" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">توليد المقال بالذكاء الاصطناعي</button>
+        </form>
+    </div>
+  {% endblock %}
+{% else %}
+  {% block content_en %}
+      <div class="card shadow p-4">
+         <h3>توليد مقال جديد في قسم: {{ category.name }}</h3>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="title">عنوان المقال:</label>
+                <input type="text" name="title" id="title" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">توليد المقال بالذكاء الاصطناعي</button>
+        </form>
+    </div>
+  {% endblock %}
+{% endif %}

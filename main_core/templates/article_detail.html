@@ -1,0 +1,347 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+
+{% if LANGUAGE_CODE == 'ar' %}
+    {% block content_ar %}
+        <!-- نهاية الأخبار العاجلة -->
+        <div class="container-fluid mt-5 mb-3 pt-3" dir="ltr">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-12">
+                        <div class="d-flex justify-content-between">
+                            <div class="section-title border-left-0 mb-0" style="width: 180px;">
+                                <h4 class="m-0 text-uppercase font-weight-bold">الأخبار العاجلة</h4>
+                            </div>
+                            <div class="owl-carousel tranding-carousel position-relative d-inline-flex align-items-center bg-white border border-right-0"
+                                style="width: calc(100% - 180px); padding-left: 100px;">
+                                {% for article in breaking_news %}
+                                <div class="text-truncate"><a class="text-secondary text-uppercase font-weight-semi-bold" href="{% url 'main_core:article_detail' article.slug %}">{{ article.title }}</a></div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- نهاية الأخبار العاجلة -->
+
+        <!-- الخبر مع الشريط الجانبي (عربي) -->
+        <div class="container-fluid" dir="rtl">
+            <div class="container">
+                <div class="row">
+                    <!-- تفاصيل الخبر -->
+                    <div class="col-lg-8">
+                        <div class="position-relative mb-3">
+                            <div class="bg-white border border-top-0 p-4"> 
+                            <h2>{{ article.title }}</h2>
+                            <p class="text-muted">الفئة: {{ article.category.name }} | نشر بتاريخ: {{ article.created_at|date:"d M Y" }}</p>
+                                <button class="btn btn-sm btn-outline-secondary">المشاهدات: {{ article.views }}</button>
+                                <button class="btn btn-sm btn-outline-secondary">التعليقات: {{ article.comments.count }} </button>
+                            <hr>
+                         {% if article.image %}
+                                <img class="img-fluid w-100" src="{{ article.image.url }}" style="object-fit: cover;" alt="{{ article.title }}">
+                            {% else %}
+                                <img class="img-fluid w-100" src="{% static 'img/news-700x435-1.jpg' %}" style="object-fit: cover;" alt="صورة خبر">
+                            {% endif %}
+                                <hr>
+                                <p>{{ article.content|safe }}</p>
+                            </div>
+                            <div class="d-flex justify-content-between bg-white border border-top-0 p-4">
+                                <div class="d-flex align-items-center">
+                                    <img class="rounded-circle ml-2" src="{% static 'img/user.jpg' %}" width="25" height="25" alt="كاتب">
+                                    <span>{{ article.author }}</span>
+                                </div>
+                                <div class="d-flex align-items-center">
+                                    <span class="mr-3"><i class="far fa-eye ml-2"></i>{{ article.views }}</span>
+                                    <span class="mr-3"><i class="far fa-comment ml-2"></i>{{ article.comments.count }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- التعليقات -->
+                        <div class="mb-3">
+                            <div class="section-title mb-0">
+                                <h4 class="m-0 text-uppercase font-weight-bold">{{ article.comments.count }} تعليقات</h4>
+                            </div>
+                            <div class="bg-white border border-top-0 p-4">
+                                <!-- مثال لتعليق -->
+                                {% if article.comments.exists %}
+                                    {% for comment in article.comments.all %}
+                                        <div class="media mb-4">
+                                            <img src="{% static 'img/user.jpg' %}" alt="صورة" class="img-fluid ml-3 mt-1" style="width: 45px;">
+                                            <div class="media-body">
+                                                <h6><a class="text-secondary font-weight-bold" href="">{{ comment.user }} <br></a><small><i>{{ comment.created_at|date:"d M, Y" }}</i></small></h6>
+                                                <p>{{ comment.content|safe }}</p>
+                                    </div>
+                                </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <p>لا توجد تعليقات بعد. كن أول من يعلق!</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                
+                        <!-- نموذج إضافة تعليق -->
+                        <div class="mb-3">
+                            <div class="section-title mb-0">
+                                <h4 class="m-0 text-uppercase font-weight-bold">أضف تعليقاً</h4>
+                            </div>
+                            <div class="bg-white border border-top-0 p-4">
+                            {% if user.is_authenticated %}
+                                <form method="POST" action="{% url 'main_core:add_comment' article.slug %}">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <textarea class="form-control" name="content" rows="3" placeholder="اكتب تعليقك هنا..." required></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">نشر التعليق</button>
+                                </form>
+                            {% else %}
+                                <p>🔒 يجب تسجيل الدخول لإضافة تعليق. <a href="{% url 'login' %}">تسجيل الدخول</a></p>
+                            {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- الشريط الجانبي -->
+                    <div class="col-lg-4 text-right">
+                        <div class="mb-3">
+                            <div class="section-title mb-0">
+                                <h4 class="m-0 text-uppercase font-weight-bold">تابعنا</h4>
+                            </div>
+                            <div class="bg-white border border-top-0 p-3">
+                                <a href="#" class="d-block w-100 text-white text-decoration-none mb-3" style="background: #39569E;">
+                                    <i class="fab fa-facebook-f text-center py-4 ml-3" style="width: 65px; background: rgba(0,0,0,.2);"></i>
+                                    <span class="font-weight-medium">12,345 معجب</span>
+                                </a>
+                                <!-- باقي الأزرار زي الإنجليزي -->
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <div class="section-title mb-0">
+                                <h4 class="m-0 text-uppercase font-weight-bold">إعلان</h4>
+                            </div>
+                            <div class="bg-white text-center border border-top-0 p-3">
+                                <a href="#"><img class="img-fluid" src="{% static 'img/news-800x500-2.jpg' %}" alt="إعلان"></a>
+                            </div>
+                        </div>
+
+                    <!-- Popular News Start -->
+                    <div class="mb-3">
+                        <div class="section-title mb-0">
+                            <h4 class="m-0 text-uppercase font-weight-bold">أخبار شائعة</h4>
+                        </div>
+                        <div class="bg-white border border-top-0 p-3">
+                            {% for NewsArticle in popular_articles %}
+                            <div class="d-flex align-items-center bg-white mb-3" style="height: 80px;">
+                                {% if NewsArticle.image %}
+                                <img alt="" class="img-fluid" style="height: 70px; width: 70px; object-fit: cover;" src="{{ NewsArticle.image.url }}"/>
+                                {% else %}
+                                <img alt="" class="img-fluid" style="height: 70px; width: 70px; object-fit: cover;" src="{% static 'img/news-110x110-1.jpg' %}">
+                                {% endif %}
+                                <div class="w-100 h-100 px-3 d-flex flex-column justify-content-center border border-left-0">
+                                    <div class="mb-1">
+                                        <a class="badge badge-primary text-uppercase font-weight-semi-bold p-1 mr-2" href="">{{ NewsArticle.category }}</a>
+                                        <a class="text-body" href=""><small>{{ NewsArticle.created_at|date:"d F, Y" }}</small></a>
+                                    </div>
+                                    <a class="text-body mb-0" href="{% url 'main_core:article_detail' NewsArticle.slug %}" 
+                                    style="font-size: 14px; font-weight: 500;">{{ NewsArticle.title }}</a>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <!-- Popular News End -->
+                        <div class="mb-3">
+                            <div class="section-title mb-0">
+                                <h4 class="m-0 text-uppercase font-weight-bold">التصنيفات</h4>
+                            </div>
+                            <div class="bg-white border border-top-0 p-3">
+                                <div class="d-flex flex-wrap m-n1">
+                        {% for NewsCategory in categories %}
+                                    <a href="{% url 'main_core:category_list' NewsCategory.slug %}" class="btn btn-sm btn-outline-secondary m-1">{{ NewsCategory.name }}</a>
+                        {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+
+{% else %}
+{% block content_en %}
+<!-- Breaking News -->
+<div class="container-fluid mt-5 mb-3 pt-3" dir="ltr">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-12">
+                <div class="d-flex justify-content-between">
+                    <div class="section-title border-left-0 mb-0" style="width: 180px;">
+                        <h4 class="m-0 text-uppercase font-weight-bold">Breaking News</h4>
+                    </div>
+                    <div class="owl-carousel tranding-carousel position-relative d-inline-flex align-items-center bg-white border border-right-0"
+                        style="width: calc(100% - 180px); padding-left: 100px;">
+                        {% for article in breaking_news %}
+                        <div class="text-truncate"><a class="text-secondary text-uppercase font-weight-semi-bold" href="{% url 'main_core:article_detail' article.slug %}">{{ article.title }}</a></div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Breaking News -->
+
+<!-- News with Sidebar -->
+<div class="container-fluid" dir="ltr">
+    <div class="container">
+        <div class="row">
+            <!-- News Details -->
+            <div class="col-lg-8">
+                <div class="position-relative mb-3">
+                    <div class="bg-white border border-top-0 p-4"> 
+                        <h2>{{ article.title }}</h2>
+                        <p class="text-muted">Category: {{ article.category.name }} | Published on: {{ article.created_at|date:"d M Y" }}</p>
+                        <button class="btn btn-sm btn-outline-secondary">Views: {{ article.views }}</button>
+                        <button class="btn btn-sm btn-outline-secondary">Comments: {{ article.comments.count }} </button>
+                        <hr>
+                        {% if article.image %}
+                            <img class="img-fluid w-100" src="{{ article.image.url }}" style="object-fit: cover;" alt="{{ article.title }}">
+                        {% else %}
+                            <img class="img-fluid w-100" src="{% static 'img/news-700x435-1.jpg' %}" style="object-fit: cover;" alt="News Image">
+                        {% endif %}
+                        <hr>
+                        <p>{{ article.content|safe }}</p>
+                    </div>
+                    <div class="d-flex justify-content-between bg-white border border-top-0 p-4">
+                        <div class="d-flex align-items-center">
+                            <img class="rounded-circle ml-2" src="{% static 'img/user.jpg' %}" width="25" height="25" alt="Author">
+                            <span>{{ article.author }}</span>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <span class="mr-3"><i class="far fa-eye ml-2"></i>{{ article.views }}</span>
+                            <span class="mr-3"><i class="far fa-comment ml-2"></i>{{ article.comments.count }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Comments -->
+                <div class="mb-3">
+                    <div class="section-title mb-0">
+                        <h4 class="m-0 text-uppercase font-weight-bold">{{ article.comments.count }} Comments</h4>
+                    </div>
+                    <div class="bg-white border border-top-0 p-4">
+                        {% if article.comments.exists %}
+                            {% for comment in article.comments.all %}
+                                <div class="media mb-4">
+                                    <img src="{% static 'img/user.jpg' %}" alt="User Image" class="img-fluid ml-3 mt-1" style="width: 45px;">
+                                    <div class="media-body">
+                                        <h6><a class="text-secondary font-weight-bold" href="">{{ comment.user }} <br></a><small><i>{{ comment.created_at|date:"d M, Y" }}</i></small></h6>
+                                        <p>{{ comment.content|safe }}</p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <p>No comments yet. Be the first to comment!</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Add Comment Form -->
+                <div class="mb-3">
+                    <div class="section-title mb-0">
+                        <h4 class="m-0 text-uppercase font-weight-bold">Add a Comment</h4>
+                    </div>
+                    <div class="bg-white border border-top-0 p-4">
+                        {% if user.is_authenticated %}
+                            <form method="POST" action="{% url 'main_core:add_comment' article.slug %}">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                    <textarea class="form-control" name="content" rows="3" placeholder="Write your comment here..." required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Post Comment</button>
+                            </form>
+                        {% else %}
+                            <p>🔒 You must be logged in to add a comment. <a href="{% url 'login' %}">Login</a></p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="col-lg-4 text-left">
+                <div class="mb-3">
+                    <div class="section-title mb-0">
+                        <h4 class="m-0 text-uppercase font-weight-bold">Follow Us</h4>
+                    </div>
+                    <div class="bg-white border border-top-0 p-3">
+                        <a href="#" class="d-block w-100 text-white text-decoration-none mb-3" style="background: #39569E;">
+                            <i class="fab fa-facebook-f text-center py-4 ml-3" style="width: 65px; background: rgba(0,0,0,.2);"></i>
+                            <span class="font-weight-medium">12,345 Fans</span>
+                        </a>
+                        <!-- Other social buttons similarly -->
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <div class="section-title mb-0">
+                        <h4 class="m-0 text-uppercase font-weight-bold">Advertisement</h4>
+                    </div>
+                    <div class="bg-white text-center border border-top-0 p-3">
+                        <a href="#"><img class="img-fluid" src="{% static 'img/news-800x500-2.jpg' %}" alt="Advertisement"></a>
+                    </div>
+                </div>
+
+                <!-- Popular News Start -->
+                <div class="mb-3">
+                    <div class="section-title mb-0">
+                        <h4 class="m-0 text-uppercase font-weight-bold">Popular News</h4>
+                    </div>
+                    <div class="bg-white border border-top-0 p-3">
+                        {% for NewsArticle in popular_articles %}
+                        <div class="d-flex align-items-center bg-white mb-3" style="height: 80px;">
+                            {% if NewsArticle.image %}
+                            <img alt="" class="img-fluid" style="height: 70px; width: 70px; object-fit: cover;" src="{{ NewsArticle.image.url }}"/>
+                            {% else %}
+                            <img alt="" class="img-fluid" style="height: 70px; width: 70px; object-fit: cover;" src="{% static 'img/news-110x110-1.jpg' %}">
+                            {% endif %}
+                            <div class="w-100 h-100 px-3 d-flex flex-column justify-content-center border border-left-0">
+                                <div class="mb-1">
+                                    <a class="badge badge-primary text-uppercase font-weight-semi-bold p-1 mr-2" href="">{{ NewsArticle.category }}</a>
+                                    <a class="text-body" href=""><small>{{ NewsArticle.created_at|date:"d F, Y" }}</small></a>
+                                </div>
+                                <a class="text-body mb-0" href="{% url 'main_core:article_detail' NewsArticle.slug %}" 
+                                style="font-size: 14px; font-weight: 500;">{{ NewsArticle.title }}</a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <!-- Popular News End -->
+
+                <div class="mb-3">
+                    <div class="section-title mb-0">
+                        <h4 class="m-0 text-uppercase font-weight-bold">Categories</h4>
+                    </div>
+                    <div class="bg-white border border-top-0 p-3">
+                        <div class="d-flex flex-wrap m-n1">
+                            {% for NewsCategory in categories %}
+                                <a href="{% url 'main_core:category_list' NewsCategory.slug %}" class="btn btn-sm btn-outline-secondary m-1">{{ NewsCategory.name }}</a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% endif %}
+
+

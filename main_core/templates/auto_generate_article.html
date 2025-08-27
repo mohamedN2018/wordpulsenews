@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="text-center my-5">
+    <form action="{% url 'main_core:auto_generate_ai_article' category.slug %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">
+            ✨ توليد مقال بالذكاء الاصطناعي
+        </button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,95 @@
+.dark-mode {
+          background-color: #121212;
+          color: white;
+        }
+        /* تصميم الزر */
+        .dark-mode-btn {
+          position: fixed;
+          z-index: 9999;
+          top: 70px;
+          right: 20px;
+          background: none;
+          border: none;
+          font-size: 24px;
+          cursor: pointer;
+          transition: transform 0.3s ease;
+        }
+        .dark-mode-btn:hover {
+          transform: scale(1.2);
+        }
+        body.dark-mode {
+            background: #181a1b !important;
+            color: #e0e0e0 !important;
+        }
+
+        body.dark-mode .navbar {
+            background: #23272b !important;
+            color: #fff !important;
+            padding: 15px;
+        }
+
+        body.dark-mode .navbar .navbar-brand,
+        body.dark-mode .navbar .nav-link,
+        body.dark-mode .navbar .dropdown-toggle {
+            color: #fff !important;
+        }
+
+        body.dark-mode .navbar .nav-link.active {
+            color: #ffd700 !important;
+        }
+
+        body.dark-mode .dropdown-menu {
+            background: #23272b;
+            color: #fff;
+        }
+
+        body.dark-mode .dropdown-item {
+            color: #fff;
+        }
+
+        body.dark-mode .dropdown-item:hover {
+            background: #343a40;
+        }
+
+        body.dark-mode .carousel-inner img,
+        body.dark-mode .hero img,
+        body.dark-mode .category .card-img-top {filter: brightness(0.85);}
+        body.dark-mode .container-fluid,
+        body.dark-mode .section-title,
+        body.dark-mode .card .position-relative .mb-3,
+        body.dark-mode .services,
+        body.dark-mode .contact,
+        body.dark-mode .about{
+            background: #23272b !important;
+            color: #e0e0e0 !important;
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.4);
+        }
+
+        body.dark-mode .footer {
+            background: #181a1b !important;
+            color: #fff !important;
+        }
+
+        body.dark-mode .btn-primary {
+            background: linear-gradient(90deg,
+          #0056b3 60%,
+          #007bff 100%) !important;
+        }
+
+        body.dark-mode .btn-outline-primary {
+            border-color: #007bff !important;
+            color: #fff !important;
+        }
+
+        body.dark-mode .btn-outline-primary:hover {
+            background: #007bff !important;
+            color: #fff !important;
+        }
+
+        body.dark-mode input,
+        body.dark-mode textarea {
+            background: #23272b !important;
+            color: #fff !important;
+            border-color: #444 !important;
+        }
+

@@ -1,0 +1,90 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}اخبار نبض العالم{% endblock %}</title>
+
+  <!-- Bootstrap 5 RTL من CDN (لا يحتاج jQuery) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css" rel="stylesheet">
+
+  <!-- ملفك الإضافي -->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <style>
+    body{background:#f8f9fa}
+    .navbar-brand{font-weight:700}
+    .nav-link{transition:.2s}
+    .nav-link:hover{color:#ffc107!important}
+    .content-card{
+      background:#fff;border-radius:12px;padding:20px;
+      box-shadow:0 8px 24px rgba(0,0,0,.06)
+    }
+    footer{background:#212529}
+    footer p{margin:0;font-size:14px}
+  </style>
+</head>
+<body>
+
+  <!-- النافبار -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'main_core:home' %}">📰 اخبار نبض العالم</a>
+
+      <!-- زرار الفتح/الغلق (مهم: data-bs- بدل data-) -->
+      <button class="navbar-toggler" type="button"
+              data-bs-toggle="collapse" data-bs-target="#navbarNav"
+              aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+
+        <!-- التصنيفات -->
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          {% for NewsCategory in categories %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'main_core:category_list' NewsCategory.slug %}">{{ NewsCategory.name }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+
+  {% if NewsCategory %}
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2>قسم: {{ NewsCategory.name }}</h2>
+      <a href="{% url 'main_core:generate_ai_article' NewsCategory.slug %}" class="btn btn-success">
+          ✨ توليد مقال جديد بالذكاء الاصطناعي
+      </a>
+    </div>
+  {% endif %}
+
+
+        <!-- البحث -->
+        <form class="d-flex" role="search" method="get" action="{% url 'main_core:search_articles' %}">
+          <input class="form-control me-2" type="search" name="q" placeholder="ابحث عن خبر..." aria-label="Search">
+          <button class="btn btn-outline-warning" type="submit">بحث</button>
+        </form>
+
+      </div>
+    </div>
+  </nav>
+
+  <!-- المحتوى -->
+  <main class="container my-4">
+    <div class="content-card">
+      {% block content %}{% endblock %}
+    </div>
+  </main>
+
+  <!-- الفوتر -->
+  <footer class="text-white text-center py-3 mt-4">
+    <p>© 2025 جميع الحقوق محفوظة - اخبار نبض العالم</p>
+  </footer>
+
+  <!-- Bootstrap 5 Bundle (فيه Popper) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- لو عندك سكريبتات خاصة -->
+  <script src="{% static 'js/app.js' %}"></script>
+</body>
+</html>

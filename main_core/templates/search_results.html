@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}نتائج البحث{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>🔍 نتائج البحث عن: "{{ query }}"</h2>
+    <hr>
+
+    {% if results %}
+        <div class="row">
+            {% for article in results %}
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ article.title }}</h5>
+                            <p class="card-text">{{ article.content|truncatewords:20 }}</p>
+                            <p><small>عدد التعليقات: {{ article.comments.count }}</small></p>
+                            <a href="{% url 'main_core:article_detail' article.slug %}" class="btn btn-primary">اقرأ المزيد</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>❌ لا توجد نتائج مطابقة.</p>
+    {% endif %}
+</div>
+{% endblock %}
