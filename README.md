@@ -1,5 +1,5 @@
 # wordpulsenews
-Step One : 
+# Step One : 
   git clone
   install pipenv 
   pipenv shell
@@ -11,7 +11,7 @@ Step One :
   pipenv install pipreqs
   pipenv freeze > requirements.txt
 
-Step Tow :
+# Step Tow :
   python manage.py migrate
   python manage.py createsuperuser
   python manage.py runserver 
