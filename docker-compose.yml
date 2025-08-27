@@ -6,7 +6,7 @@ services:
       volumes:
         - ./:/usr/src/app
       ports:
-        - 8080:80
+        - 80:80
       expose:
         - 80
-      command: "gunicorn --chdir /usr/src/app --access-logfile - --error-logfile - --bind 8080:80 newspluse.wsgi:application"
+      command: "gunicorn --chdir /usr/src/app --access-logfile - --error-logfile - --bind 80:80 newspluse.wsgi:application"
