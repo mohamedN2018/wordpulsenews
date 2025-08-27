@@ -1,0 +1,65 @@
+{% load static %}
+{% load i18n %}
+
+{% if LANGUAGE_CODE == 'ar' %}
+    <!-- شريط التنقل بداية -->
+    <div class="container-fluid p-0" style="position: sticky; top: 0; z-index: 100; overflow: hidden;" dir="rtl">
+        <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-2 py-lg-0 px-lg-5">
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-between px-0 px-lg-3" id="navbarCollapse">
+                <div class="navbar-nav ml-auto py-0">
+                    <a href="{% url 'main_core:home' %}" class="nav-item nav-link active">الرئيسية</a>
+                    {% for NewsCategory in categories %}
+                    <a href="{% url 'main_core:category_list' NewsCategory.slug %}" class="nav-item nav-link">{% trans NewsCategory.name %}</a>
+                    {% endfor %}
+                </div>
+                <div class="input-group mr-auto d-none d-lg-flex" style="width: 100%; max-width: 300px;">
+                        <!-- البحث -->
+                        <form class="d-flex" role="search" method="get" action="{% url 'main_core:search_articles' %}">
+                        <input class="form-control me-2" type="search" name="q" placeholder="ابحث عن خبر..." aria-label="Search">
+                        <button class="input-group-text bg-primary text-dark border-0 px-3" type="submit"><i class="fa fa-search">بحث</i></button>
+                        </form>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <!-- شريط التنقل نهاية -->
+{% else %}
+<!-- Navbar Start -->
+<div class="container-fluid p-0" style="position: sticky; top: 0; z-index: 100;" dir="ltr">
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-2 py-lg-0 px-lg-5">
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse justify-content-between px-0 px-lg-3" id="navbarCollapse">
+            
+            <!-- Links -->
+            <div class="navbar-nav py-0">
+                <a href="{% url 'main_core:home' %}" class="nav-item nav-link active">Home</a>
+                {% for NewsCategory in categories %}
+                    <a href="{% url 'main_core:category_list' NewsCategory.slug %}" 
+                       class="nav-item nav-link">{% trans NewsCategory.name %}</a>
+                {% endfor %}
+            </div>
+            
+            <!-- Search -->
+            <div class="input-group ml-auto d-none d-lg-flex" style="width: 100%; max-width: 300px;">
+                <form class="d-flex w-100" role="search" method="get" action="{% url 'main_core:search_articles' %}">
+                    <input class="form-control" type="search" name="q" placeholder="Search for news..." aria-label="Search">
+                    <button class="input-group-text bg-primary text-dark border-0 px-3" type="submit">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </nav>
+</div>
+<!-- Navbar End -->
+{% endif %}
+
+
+

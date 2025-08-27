@@ -27,10 +27,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config('MY_SECRET_KEY')
 
-OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "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")
+OPENROUTER_API_KEY = config("OPENROUTER_API_KEY")
 
-YOUTUBE_API_KEY = 'AIzaSyDj3vQPwhM_V0Q7b1INd914PZ0Y0-uncZY'
-FB_ACCESS_TOKEN = "1354063459385700|mer_MZUKv56IwGN_rOHLSv1w6U4"
+YOUTUBE_API_KEY = config('YOUTUBE_API_KEY')
+FB_ACCESS_TOKEN = config('FB_ACCESS_TOKEN')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

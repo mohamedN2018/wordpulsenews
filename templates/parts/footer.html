@@ -1,0 +1,143 @@
+{% load static %}
+{% load i18n %}
+
+{% if LANGUAGE_CODE == 'ar' %}
+
+<!-- Footer Start -->
+<div class="container-fluid bg-dark pt-5 px-sm-3 px-md-5 mt-5" dir="rtl">
+    <div class="row py-4">
+        <!-- تواصل معنا -->
+        <div class="col-lg-3 col-md-6 mb-5 text-right">
+            <h5 class="mb-4 text-white text-uppercase font-weight-bold">اتصل بنا</h5>
+            <p class="font-weight-medium"><i class="fa fa-map-marker-alt ml-2"></i>{{ information.location }}</p>
+            <p class="font-weight-medium"><i class="fa fa-phone-alt ml-2"></i>{{ information.phone }}</p>
+            <p class="font-weight-medium"><i class="fa fa-envelope ml-2"></i>{{ information.email }}</p>
+            <h6 class="mt-4 mb-3 text-white text-uppercase font-weight-bold">تابعنا</h6>
+            <div class="d-flex justify-content-end">
+                {% for icon in social_media_icons %}
+                   <a class="btn btn-lg btn-secondary btn-lg-square ml-2" href="{{ icon.link }}"><i class="fab {{ icon.icon_name }}"></i></a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- أخبار شائعة -->
+        <div class="col-lg-3 col-md-6 mb-5 text-right">
+            <h5 class="mb-4 text-white text-uppercase font-weight-bold">أخبار شائعة</h5>
+            {% for NewsArticle in popular_articles %}
+            <div class="mb-3">
+                <div class="mb-2">
+                    <a class="badge badge-primary text-uppercase font-weight-semi-bold p-1 ml-2" href="">{{ NewsArticle.category }}</a>
+                    <a class="text-body" href=""><small>{{ NewsArticle.created_at|date:"d F, Y" }}</small></a>
+                </div>
+                <a class="small text-body text-uppercase font-weight-medium" href="">{{ NewsArticle.title }}</a>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- التصنيفات -->
+        <div class="col-lg-3 col-md-6 mb-5 text-right">
+            <h5 class="mb-4 text-white text-uppercase font-weight-bold">التصنيفات</h5>
+            <div class="m-n1">
+            {% for NewsCategory in categories %}
+                <a href="{% url 'main_core:category_list' NewsCategory.slug %}" class="btn btn-sm btn-secondary m-1">{{ NewsCategory.name }}</a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- معرض الصور -->
+        <div class="col-lg-3 col-md-6 mb-5">
+            <h5 class="mb-4 text-white text-uppercase font-weight-bold">معرض الصور</h5>
+            <div class="row">
+                {% for photo in photos %}
+                <div class="col-4 mb-3">
+                    <a href="{{ photo.image.url }}" target="_blank" class="flickr-photo">
+                        <img class="w-100" 
+                            src="{{ photo.image.url }}" 
+                            alt="{{ photo.title }}">
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <!--  معرض الصور -->
+    </div>
+</div>
+
+<!-- الحقوق -->
+<div class="container-fluid py-4 px-sm-3 px-md-5" style="background: #111111;" dir="rtl">
+    <p class="m-0 text-center">
+        © <a href="#">موقع أخبار الأعمال</a>. جميع الحقوق محفوظة. 
+        <br/>تصميم بواسطة <a href="https://mohamednabilpro.netlify.app/">mohamednabilpro</a> 
+        <br/>موزع من <a href="https://mohamednabilpro.netlify.app/">mohamednabilpro</a>
+    </p>
+</div>
+<!-- Footer End -->
+
+{% else %}
+
+   <!-- Footer Start -->
+    <div class="container-fluid bg-dark pt-5 px-sm-3 px-md-5 mt-5">
+        <div class="row py-4">
+            <div class="col-lg-3 col-md-6 mb-5">
+                <h5 class="mb-4 text-white text-uppercase font-weight-bold">Get In Touch</h5>
+            <p class="font-weight-medium"><i class="fa fa-map-marker-alt ml-2"></i>{{ information.location }}</p>
+            <p class="font-weight-medium"><i class="fa fa-phone-alt ml-2"></i>{{ information.phone }}</p>
+            <p class="font-weight-medium"><i class="fa fa-envelope ml-2"></i>{{ information.email }}</p>
+                <h6 class="mt-4 mb-3 text-white text-uppercase font-weight-bold">Follow Us</h6>
+                <div class="d-flex justify-content-start">
+                {% for icon in social_media_icons %}
+                   <a class="btn btn-lg btn-secondary btn-lg-square ml-2" href="{{ icon.link }}"><i class="fab {{ icon.icon_name }}"></i></a>
+                {% endfor %}
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-5">
+                <h5 class="mb-4 text-white text-uppercase font-weight-bold">Popular News</h5>
+                {% for NewsArticle in popular_articles %}
+                    <div class="mb-3">
+                        <div class="mb-2">
+                            <a class="badge badge-primary text-uppercase font-weight-semi-bold p-1 ml-2" href="">{{ NewsArticle.category }}</a>
+                            <a class="text-body" href=""><small>{{ NewsArticle.created_at|date:"d F, Y" }}</small></a>
+                        </div>
+                        <a class="small text-body text-uppercase font-weight-medium" href="">{{ NewsArticle.title }}</a>
+                    </div>
+                    {% endfor %}
+            </div>
+            <div class="col-lg-3 col-md-6 mb-5">
+                <h5 class="mb-4 text-white text-uppercase font-weight-bold">Categories</h5>
+                <div class="m-n1">
+            {% for NewsCategory in categories %}
+                <a href="{% url 'main_core:category_list' NewsCategory.slug %}" class="btn btn-sm btn-secondary m-1">{{ NewsCategory.name }}</a>
+                {% endfor %}
+                </div>
+            </div>
+        <!-- Flickr Photos Start -->
+        <div class="col-lg-3 col-md-6 mb-5">
+            <h5 class="mb-4 text-white text-uppercase font-weight-bold">Flickr Photos</h5>
+            <div class="row">
+                {% for photo in photos %}
+                <div class="col-4 mb-3">
+                    <a href="{{ photo.image.url }}" target="_blank" class="flickr-photo">
+                        <img class="w-100" 
+                            src="{{ photo.image.url }}" 
+                            alt="{{ photo.title }}">
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <!-- Flickr Photos End -->
+
+        </div>
+    </div>
+    <div class="container-fluid py-4 px-sm-3 px-md-5" style="background: #111111;">
+        <p class="m-0 text-center">&copy; <a href="#">Your Site Name</a>. All Rights Reserved. 
+		
+		<!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+		Design by <a href="https://mohamednabilpro.netlify.app/">mohamednabilpro</a><br>
+        Distributed by <a href="https://mohamednabilpro.netlify.app/">mohamednabilpro</a>
+    </p>
+    </div>
+    <!-- Footer End -->
+
+{% endif %}
+ 
