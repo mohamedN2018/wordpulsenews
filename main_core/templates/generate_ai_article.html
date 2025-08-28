@@ -2,30 +2,54 @@
 
 {% if LANGUAGE_CODE == 'ar' %}
   {% block content_ar %}
-      <div class="card shadow p-4">
-         <h3>توليد مقال جديد في قسم: {{ category.name }}</h3>
-        <form method="post">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="title">عنوان المقال:</label>
-                <input type="text" name="title" id="title" class="form-control" required>
-            </div>
-            <button type="submit" class="btn btn-primary mt-3">توليد المقال بالذكاء الاصطناعي</button>
-        </form>
+    <div class="container my-5">
+      <div class="card shadow-lg border-0 rounded-3 p-4 bg-body-tertiary">
+          <h3 class="fw-bold mb-4 text-primary-emphasis text-center">
+            ✍️ توليد مقال جديد في قسم: {{ category.name }}
+          </h3>
+
+          <form method="post" class="mt-3">
+              {% csrf_token %}
+              <div class="form-group mb-3">
+                  <label for="title" class="form-label fw-semibold">عنوان المقال:</label>
+                  <input type="text" name="title" id="title" 
+                         class="form-control shadow-sm" 
+                         placeholder="اكتب عنوان المقال هنا..." required>
+              </div>
+
+              <div class="text-center">
+                <button type="submit" class="btn btn-success px-4 py-2 shadow-sm rounded-pill">
+                    <i class="fas fa-magic me-2"></i> توليد المقال بالذكاء الاصطناعي
+                </button>
+              </div>
+          </form>
+      </div>
     </div>
   {% endblock %}
 {% else %}
   {% block content_en %}
-      <div class="card shadow p-4">
-         <h3>توليد مقال جديد في قسم: {{ category.name }}</h3>
-        <form method="post">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="title">عنوان المقال:</label>
-                <input type="text" name="title" id="title" class="form-control" required>
-            </div>
-            <button type="submit" class="btn btn-primary mt-3">توليد المقال بالذكاء الاصطناعي</button>
-        </form>
+    <div class="container my-5">
+      <div class="card shadow-lg border-0 rounded-3 p-4 bg-body-tertiary">
+          <h3 class="fw-bold mb-4 text-primary-emphasis text-center">
+            ✍️ Generate a New Article in: {{ category.name }}
+          </h3>
+
+          <form method="post" class="mt-3">
+              {% csrf_token %}
+              <div class="form-group mb-3">
+                  <label for="title" class="form-label fw-semibold">Article Title:</label>
+                  <input type="text" name="title" id="title" 
+                         class="form-control shadow-sm" 
+                         placeholder="Enter the article title here..." required>
+              </div>
+
+              <div class="text-center">
+                <button type="submit" class="btn btn-success px-4 py-2 shadow-sm rounded-pill">
+                    <i class="fas fa-magic me-2"></i> Generate Article with AI
+                </button>
+              </div>
+          </form>
+      </div>
     </div>
   {% endblock %}
 {% endif %}

@@ -47,9 +47,8 @@ def home(request, category_slug=None):
     else:
         print("Error fetching YouTube data:", response)  # مفيد للتصحيح
 
-
-    return render(request, "home.html", {
-        "categories": categories,
+    context = {
+            "categories": categories,
         "latest_articles": latest_articles,
         "popular_articles": popular_articles,
         "breaking_news": breaking_news,
@@ -61,7 +60,10 @@ def home(request, category_slug=None):
         "trending_news": trending_news,
         "latest_articles_slider": latest_articles_slider,
         "trending_news_main": trending_news_main,
-    })
+
+    }
+
+    return render(request, "home.html", context)
 
 
 
@@ -213,7 +215,16 @@ def unique_slug(title):
     return slug
 
 def generate_ai_article(request, category_slug):
+    photos = FlickrPhoto.objects.all().order_by('-created_at')[:12]  # آخر 6 صور
+    # جلب كل التصنيفات
+    categories = NewsCategory.objects.all()
+    # جلب معلومات الاتصال
+    information = InformationContact.objects.first()
+    icon = SocialMediaIcon.objects.all()
+
     category = get_object_or_404(NewsCategory, slug=category_slug)
+    popular_articles = NewsArticle.objects.order_by('-views')[:6]
+
 
     if request.method == "POST":
         # ✅ AI يولد العنوان + المقال
@@ -228,7 +239,8 @@ def generate_ai_article(request, category_slug):
                 "category": category,
                 "title": ai_title,
                 "content": ai_content,
-                "author": request.user
+                "author": request.user,
+
             }
         )
         article.save()
@@ -240,7 +252,16 @@ def generate_ai_article(request, category_slug):
 
         return redirect("main_core:article_detail", slug=article.slug)
 
-    return render(request, "generate_ai_article.html", {"category": category})
+    context = {
+        "category": category,
+        "photos": photos,
+        "categories": categories,
+        "information": information,
+        "icon": icon,
+        "popular_articles": popular_articles
+    }
+
+    return render(request, "generate_ai_article.html", context)
 
 
 

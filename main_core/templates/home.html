@@ -98,7 +98,6 @@
 <!-- Breaking News End -->
 
 <!-- بداية شريط الأخبار المميزة -->
-<!-- Featured News Slider Start -->
 <div class="container-fluid pt-5 mb-3">
     <div class="container">
         <div class="section-title">
@@ -113,10 +112,10 @@
                     <img class="img-fluid h-100" src="{% static 'img/news-110x110-1.jpg' %}" style="object-fit: cover;">
                 {% endif %}
 
-                <!-- أوفرلاي -->
+                <!-- Overlay -->
                 <div class="overlay d-flex flex-column justify-content-end p-3">
                     <div class="mb-2">
-                        <!-- الفئة -->
+                        <!-- التصنيف -->
                         <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2" href="">
                             {{ article.category.name }}
                         </a>
@@ -127,7 +126,7 @@
                     </div>
                     <!-- العنوان -->
                     <a class="h6 m-0 news-title text-uppercase font-weight-semi-bold" 
-                       href="{% url 'main_core:article_detail' article.slug %}">
+                    href="{% url 'main_core:article_detail' article.slug %}">
                         {{ article.title }}
                     </a>
                     <!-- المشاهدات والتعليقات -->
@@ -151,44 +150,59 @@
 <div class="container-fluid"> 
     <div class="container">
         <div class="row">
-            <!-- آخر الأخبار -->
+            <!-- آخر الأخبار Start -->
             <div class="col-lg-8">
                 <div class="row">
+                    <!-- عنوان القسم -->
                     <div class="col-12">
-                        <div class="section-title">
+                        <div class="section-title d-flex justify-content-between align-items-center">
                             <h4 class="m-0 text-uppercase font-weight-bold">آخر الأخبار</h4>
-                            <a class="text-secondary font-weight-medium text-decoration-none" href="">عرض الكل</a>
                         </div>
                     </div>
+
+                    <!-- تكرار المقالات -->
                     {% for latest_article in latest_articles %}
                     <div class="col-lg-6">
                         <div class="position-relative mb-3">
+                            <!-- صورة المقال -->
                             {% if latest_article.image %}
-                            <img class="img-fluid w-100" src="{{ latest_article.image.url }}" style="object-fit: cover;">
+                                <img class="img-fluid w-100" src="{{ latest_article.image.url }}" alt="{{ latest_article.title }}" style="object-fit: cover;">
                             {% else %}
-                            <img class="img-fluid w-100" src="{% static 'img/news-700x435-1.jpg' %}" style="object-fit: cover;">
+                                <img class="img-fluid w-100" src="{% static 'img/news-700x435-1.jpg' %}" alt="صورة افتراضية" style="object-fit: cover;">
                             {% endif %}
-                            <div class="bg-white border border-top-0 p-4">
+
+                            <!-- محتوى المقال -->
+                            <div class="bg-white border border-top-0 p-4" dir="rtl">
                                 <div class="mb-2">
-                                    <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2"
-                                        href="">{{ latest_article.category.name }}</a>
-                                    <a class="text-body" href="">
-                                        <small><i class="fa fa-clock mr-1"></i> {{ latest_article.created_at|date:"d M, Y" }}</small>
+                                    <!-- التصنيف -->
+                                    <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 ml-2" href="#">
+                                        {{ latest_article.category.name }}
+                                    </a>
+                                    <!-- التاريخ -->
+                                    <a class="text-body" href="#">
+                                        <small><i class="fa fa-clock ml-1"></i> {{ latest_article.created_at|date:"d M, Y" }}</small>
                                     </a>
                                 </div>
-                                <a class="h4 d-block mb-3 text-secondary text-uppercase font-weight-bold" href="{% url 'main_core:article_detail' latest_article.slug %}">
+                                <!-- العنوان -->
+                                <a class="h4 d-block mb-3 text-secondary text-uppercase font-weight-bold" 
+                                href="{% url 'main_core:article_detail' latest_article.slug %}">
                                     {{ latest_article.title }}
                                 </a>
+                                <!-- وصف قصير -->
                                 <p class="m-0">{{ latest_article.content|truncatewords:20 }}</p>
                             </div>
-                            <div class="d-flex justify-content-between bg-white border border-top-0 p-4">
+
+                            <!-- تذييل المقال (الكاتب + الإحصائيات) -->
+                            <div class="d-flex justify-content-between bg-white border border-top-0 p-4" dir="rtl">
+                                <!-- الكاتب -->
                                 <div class="d-flex align-items-center">
-                                    <img class="rounded-circle mr-2" src="{% static 'img/user.jpg' %}" width="25" height="25" alt="">
+                                    <img class="rounded-circle ml-2" src="{% static 'img/user.jpg' %}" width="25" height="25" alt="الكاتب">
                                     <small>{{ latest_article.author.username }}</small>
                                 </div>
+                                <!-- المشاهدات + التعليقات -->
                                 <div class="d-flex align-items-center">
-                                    <small class="mr-3"><i class="far fa-eye ml-2"></i>{{ latest_article.views }} مشاهدة</small>
-                                    <small class="mr-3"><i class="far fa-comment ml-2"></i>{{ latest_article.comments.count }} تعليق</small>
+                                    <small class="ml-3"><i class="far fa-eye mr-2"></i> {{ latest_article.views }}</small>
+                                    <small><i class="far fa-comment mr-2"></i> {{ latest_article.comments.count }}</small>
                                 </div>
                             </div>
                         </div>
@@ -196,89 +210,91 @@
                     {% endfor %}
                 </div>
             </div>
+            <!-- آخر الأخبار End -->
             
             <!-- الشريط الجانبي -->
             <div class="col-lg-4">
-                <!-- تابعنا -->
-                <div class="mb-3">
-                    <div class="section-title mb-0">
-                        <h4 class="m-0 text-uppercase font-weight-bold">تابعنا</h4>
-                    </div>
-                    <div class="bg-white border border-top-0 p-3">
-                        <a class="d-block w-100 text-white text-decoration-none mb-3" href="https://www.youtube.com/channel/UCPP15i6IPmPFS8Il7aIP5Sw" style="background: #DC472E;">
-                            <i class="fab fa-youtube text-center py-4 mr-3" style="width: 65px; background: rgba(0, 0, 0, .2);"></i>
-                            <span class="font-weight-medium">{{ youtube_subscribers }} مشترك</span>
-                        </a>
-                        {% for icon in icons %}
-                        <a class="btn btn-lg btn-secondary btn-lg-square ml-2" href="{{ icon.link }}">
-                            <i class="fab {{ icon.icon_name }}"></i>
-                        </a>
-                        {% endfor %}
-                    </div>
-                </div>
-                <!-- تابعنا - النهاية -->
+            <!-- تابعنا -->
 
-                <!-- إعلان -->
-                <div class="mb-3">
-                    <div class="section-title mb-0">
-                        <h4 class="m-0 text-uppercase font-weight-bold">إعلان</h4>
-                    </div>
-                    <div class="bg-white text-center border border-top-0 p-3">
-                        <a href=""><img class="img-fluid" src="{% static 'img/news-800x500-2.jpg' %}" alt=""></a>
-                    </div>
+            <div class="mb-3">
+                <div class="section-title mb-0">
+                    <h4 class="m-0 text-uppercase font-weight-bold">تابعنا</h4>
                 </div>
-                <!-- إعلان - النهاية -->
-            
-                <!-- الأخبار الشائعة -->
-                <div class="mb-3">
-                    <div class="section-title mb-0">
-                        <h4 class="m-0 text-uppercase font-weight-bold">الأخبار الشائعة</h4>
-                    </div>
-                    <div class="bg-white border border-top-0 p-3">
-                        {% for article in trending_news %}
-                        <div class="d-flex align-items-center bg-white mb-3 rounded shadow-sm overflow-hidden" style="height: 110px;">
-                            {% if article.image %}
-                            <img class="img-fluid flex-shrink-0" src="{{ article.image.url }}" alt="{{ article.title }}" style="width:110px; height:100%; object-fit:cover;">
-                            {% else %}
-                            <img class="img-fluid flex-shrink-0" src="{% static 'img/news-110x110-1.jpg' %}" alt="{{ article.title }}" style="width:110px; height:100%; object-fit:cover;">
-                            {% endif %}  
-                            <div class="w-100 h-100 px-3 d-flex flex-column justify-content-center border border-left-0">
-                                <div class="mb-1 d-flex align-items-center flex-wrap">
-                                    <a class="badge badge-primary text-uppercase font-weight-semi-bold p-1 mr-2" href="#">
-                                        {{ article.category.name }}
-                                    </a>
-                                </div>
-                                <a class="h6 m-0 text-secondary text-uppercase font-weight-bold text-truncate" href="{% url 'main_core:article_detail' article.slug %}">
-                                    {{ article.title }}
+                <div class="bg-white border border-top-0 p-3">
+                    <a class="d-block w-100 text-white text-decoration-none mb-3" href="https://www.youtube.com/channel/UCPP15i6IPmPFS8Il7aIP5Sw" style="background: #DC472E;">
+                        <i class="fab fa-youtube text-center py-4 mr-3" style="width: 65px; background: rgba(0, 0, 0, .2);"></i>
+                        <span class="font-weight-medium">{{ youtube_subscribers }} مشترك</span>
+                    </a>
+                    {% for icon in icons %}
+                    <a class="btn btn-lg btn-secondary btn-lg-square ml-2" href="{{ icon.link }}">
+                        <i class="fab {{ icon.icon_name }}"></i>
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+            <!-- تابعنا - النهاية -->
+
+            <!-- إعلان -->
+            <div class="mb-3">
+                <div class="section-title mb-0">
+                    <h4 class="m-0 text-uppercase font-weight-bold">إعلان</h4>
+                </div>
+                <div class="bg-white text-center border border-top-0 p-3">
+                    <a href=""><img class="img-fluid" src="{% static 'img/news-800x500-2.jpg' %}" alt=""></a>
+                </div>
+            </div>
+            <!-- إعلان - النهاية -->
+        
+            <!-- الأخبار الشائعة -->
+            <div class="mb-3">
+                <div class="section-title mb-0">
+                    <h4 class="m-0 text-uppercase font-weight-bold">الأخبار الشائعة</h4>
+                </div>
+                <div class="bg-white border border-top-0 p-3">
+                    {% for article in trending_news %}
+                    <div class="d-flex align-items-center bg-white mb-3 rounded shadow-sm overflow-hidden" style="height: 110px;">
+                        {% if article.image %}
+                        <img class="img-fluid flex-shrink-0" src="{{ article.image.url }}" alt="{{ article.title }}" style="width:110px; height:100%; object-fit:cover;">
+                        {% else %}
+                        <img class="img-fluid flex-shrink-0" src="{% static 'img/news-110x110-1.jpg' %}" alt="{{ article.title }}" style="width:110px; height:100%; object-fit:cover;">
+                        {% endif %}  
+                        <div class="w-100 h-100 px-3 d-flex flex-column justify-content-center border border-left-0">
+                            <div class="mb-1 d-flex align-items-center flex-wrap">
+                                <a class="badge badge-primary text-uppercase font-weight-semi-bold p-1 mr-2" href="#">
+                                    {{ article.category.name }}
                                 </a>
-                                <small class="text-muted mt-1 d-flex align-items-center">
-                                    <i class="fa fa-clock mr-1"></i> {{ article.created_at|date:"d M, Y" }}
-                                    <span class="mx-2">|</span>
-                                    <i class="fa fa-eye mr-1"></i> {{ article.views }} مشاهدة
-                                </small>
                             </div>
+                            <a class="h6 m-0 text-secondary text-uppercase font-weight-bold text-truncate" href="{% url 'main_core:article_detail' article.slug %}">
+                                {{ article.title }}
+                            </a>
+                            <small class="text-muted mt-1 d-flex align-items-center">
+                                <i class="fa fa-clock mr-1"></i> {{ article.created_at|date:"d M, Y" }}
+                                <span class="mx-2">|</span>
+                                <i class="fa fa-eye mr-1"></i> {{ article.views }} مشاهدة
+                            </small>
                         </div>
-                        {% empty %}
-                        <p class="text-muted">لا توجد أخبار شائعة متاحة.</p>
+                    </div>
+                    {% empty %}
+                    <p class="text-muted">لا توجد أخبار شائعة متاحة.</p>
+                    {% endfor %}
+                </div>
+            </div>
+            <!-- الأخبار الشائعة - النهاية -->
+
+            <!-- الوسوم -->
+            <div class="mb-3">
+                <div class="section-title mb-0">
+                    <h4 class="m-0 text-uppercase font-weight-bold">الوسوم</h4>
+                </div>
+                <div class="bg-white border border-top-0 p-3">
+                    <div class="d-flex flex-wrap m-n1">
+                        {% for category in categories %}
+                        <a href="{% url 'main_core:category_list' category.slug %}" class="btn btn-sm btn-outline-secondary m-1">{{ category.name }}</a>
                         {% endfor %}
                     </div>
                 </div>
-                <!-- الأخبار الشائعة - النهاية -->
-
-                <!-- الوسوم -->
-                <div class="mb-3">
-                    <div class="section-title mb-0">
-                        <h4 class="m-0 text-uppercase font-weight-bold">الوسوم</h4>
-                    </div>
-                    <div class="bg-white border border-top-0 p-3">
-                        <div class="d-flex flex-wrap m-n1">
-                            {% for category in categories %}
-                            <a href="{% url 'main_core:category_list' category.slug %}" class="btn btn-sm btn-outline-secondary m-1">{{ category.name }}</a>
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-                <!-- الوسوم - النهاية -->
+            </div>
+            <!-- الوسوم - النهاية -->
             </div>
         </div>
     </div>
@@ -289,17 +305,39 @@
   {% endblock %}
 {% else %}
   {% block content_en %}
-    <!-- Main News Slider Start -->
+<!-- Main News Slider Start -->
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-7 px-0">
-                <div class="owl-carousel main-carousel position-relative">
-                    {% for article in latest_articles_slider %}
-                    <div class="position-relative overflow-hidden" style="height: 500px;">
+       <div class="row">
+        <div class="col-lg-7 px-0">
+            <div class="owl-carousel main-carousel position-relative">
+                {% for article in latest_articles_slider %}
+                <div class="position-relative overflow-hidden" style="height: 500px;">
+                    {% if article.image %}
+                    <img class="img-fluid h-100" src="{{ article.image.url }}" style="object-fit: cover;">
+                    {% else %}
+                    <img class="img-fluid h-100" src="{% static 'img/news-110x110-1.jpg' %}" style="object-fit: cover;">
+                    {% endif %}
+                    <div class="overlay">
+                        <div class="mb-2">
+                            <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2"
+                                href="">{{ article.category.name }}</a>
+                            <a class="text-white" href=""><small>{{ article.created_at|date:"M d, Y" }}</small></a>
+                        </div>
+                        <a class="h2 m-0 text-white text-uppercase font-weight-bold" href="{% url 'main_core:article_detail' article.slug %}">{{ article.title }}</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            </div>
+            <div class="col-lg-5 px-0">
+            <div class="row mx-0">
+                {% for article in trending_news_main %}
+                <div class="col-md-6 px-0">
+                    <div class="position-relative overflow-hidden" style="height: 250px;">
                         {% if article.image %}
-                        <img class="img-fluid h-100" src="{{ article.image.url }}" style="object-fit: cover;">
+                        <img class="img-fluid w-100 h-100" src="{{ article.image.url }}" style="object-fit: cover;">
                         {% else %}
-                        <img class="img-fluid h-100" src="{% static 'img/news-110x110-1.jpg' %}" style="object-fit: cover;">
+                        <img class="img-fluid w-100 h-100" src="{% static 'img/news-700x435-2.jpg' %}" style="object-fit: cover;">
                         {% endif %}
                         <div class="overlay">
                             <div class="mb-2">
@@ -307,40 +345,17 @@
                                     href="">{{ article.category.name }}</a>
                                 <a class="text-white" href=""><small>{{ article.created_at|date:"M d, Y" }}</small></a>
                             </div>
-                            <a class="h2 m-0 text-white text-uppercase font-weight-bold" href="{% url 'main_core:article_detail' article.slug %}">{{ article.title }}</a>
+                            <a class="h6 m-0 text-white text-uppercase font-weight-semi-bold" href="{% url 'main_core:article_detail' article.slug %}">{{ article.title }}</a>
                         </div>
                     </div>
-                    {% endfor %}
                 </div>
-            </div>
-            <div class="col-lg-5 px-0">
-                <div class="row mx-0">
-                    {% for article in trending_news_main %}
-                    <div class="col-md-6 px-0">
-                        <div class="position-relative overflow-hidden" style="height: 250px;">
-                            {% if article.image %}
-                            <img class="img-fluid w-100 h-100" src="{{ article.image.url }}" style="object-fit: cover;">
-                            {% else %}
-                            <img class="img-fluid w-100 h-100" src="{% static 'img/news-700x435-2.jpg' %}" style="object-fit: cover;">
-                            {% endif %}
-                            <div class="overlay">
-                                <div class="mb-2">
-                                    <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2"
-                                        href="">{{ article.category.name }}</a>
-                                    <a class="text-white" href=""><small>{{ article.created_at|date:"M d, Y" }}</small></a>
-                                </div>
-                                <a class="h6 m-0 text-white text-uppercase font-weight-semi-bold" href="{% url 'main_core:article_detail' article.slug %}">{{ article.title }}</a>
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
+                {% endfor %}
             </div>
         </div>
     </div>
-    <!-- Main News Slider End -->
+ <!-- Main News Slider End -->
 
-    <!-- Breaking News Start -->
+<!-- Breaking News Start -->
     <div class="container-fluid bg-dark py-3 mb-3">
         <div class="container">
             <div class="row align-items-center bg-dark">
@@ -359,13 +374,13 @@
             </div>
         </div>
     </div>
-    <!-- Breaking News End -->
+<!-- Breaking News End -->
 
-    <!-- Featured News Slider Start -->
+<!-- Featured News Slider Start -->
     <div class="container-fluid pt-5 mb-3">
         <div class="container">
             <div class="section-title">
-                <h4 class="m-0 text-uppercase font-weight-bold">الأخبار المميزة</h4>
+                <h4 class="m-0 text-uppercase font-weight-bold">Featured News</h4>
             </div>
             <div class="owl-carousel news-carousel carousel-item-4 position-relative">
                 {% for article in main_featured_slider %}
@@ -397,50 +412,65 @@
             </div>
         </div>
     </div>
-    <!-- Featured News Slider End -->
+<!-- Featured News Slider End -->
 
-    <!-- News With Sidebar Start -->
+<!-- News With Sidebar Start -->
     <div class="container-fluid"> 
         <div class="container">
             <div class="row">
-                <!-- Latest News -->
+                <!-- Latest News Start -->
                 <div class="col-lg-8">
                     <div class="row">
+                        <!-- Section Title -->
                         <div class="col-12">
-                            <div class="section-title">
+                            <div class="section-title d-flex justify-content-between align-items-center">
                                 <h4 class="m-0 text-uppercase font-weight-bold">Latest News</h4>
-                                <a class="text-secondary font-weight-medium text-decoration-none" href="">View All</a>
                             </div>
                         </div>
+
+                        <!-- Latest Articles Loop -->
                         {% for latest_article in latest_articles %}
                         <div class="col-lg-6">
                             <div class="position-relative mb-3">
+                                <!-- Article Image -->
                                 {% if latest_article.image %}
-                                <img class="img-fluid w-100" src="{{ latest_article.image.url }}" style="object-fit: cover;">
+                                    <img class="img-fluid w-100" src="{{ latest_article.image.url }}" alt="{{ latest_article.title }}" style="object-fit: cover;">
                                 {% else %}
-                                <img class="img-fluid w-100" src="{% static 'img/news-700x435-1.jpg' %}" style="object-fit: cover;">
+                                    <img class="img-fluid w-100" src="{% static 'img/news-700x435-1.jpg' %}" alt="Default Image" style="object-fit: cover;">
                                 {% endif %}
+
+                                <!-- Article Content -->
                                 <div class="bg-white border border-top-0 p-4">
                                     <div class="mb-2">
-                                        <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2"
-                                            href="">{{ latest_article.category.name }}</a>
-                                        <a class="text-body" href="">
+                                        <!-- Category -->
+                                        <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2" href="#">
+                                            {{ latest_article.category.name }}
+                                        </a>
+                                        <!-- Date -->
+                                        <a class="text-body" href="#">
                                             <small><i class="fa fa-clock mr-1"></i> {{ latest_article.created_at|date:"M d, Y" }}</small>
                                         </a>
                                     </div>
-                                    <a class="h4 d-block mb-3 text-secondary text-uppercase font-weight-bold" href="{% url 'main_core:article_detail' latest_article.slug %}">
+                                    <!-- Title -->
+                                    <a class="h4 d-block mb-3 text-secondary text-uppercase font-weight-bold" 
+                                    href="{% url 'main_core:article_detail' latest_article.slug %}">
                                         {{ latest_article.title }}
                                     </a>
+                                    <!-- Short Description -->
                                     <p class="m-0">{{ latest_article.content|truncatewords:20 }}</p>
                                 </div>
+
+                                <!-- Article Footer (Author + Stats) -->
                                 <div class="d-flex justify-content-between bg-white border border-top-0 p-4">
+                                    <!-- Author -->
                                     <div class="d-flex align-items-center">
-                                        <img class="rounded-circle mr-2" src="{% static 'img/user.jpg' %}" width="25" height="25" alt="">
+                                        <img class="rounded-circle mr-2" src="{% static 'img/user.jpg' %}" width="25" height="25" alt="Author">
                                         <small>{{ latest_article.author.username }}</small>
                                     </div>
+                                    <!-- Views & Comments -->
                                     <div class="d-flex align-items-center">
-                                        <small class="mr-3"><i class="far fa-eye ml-2"></i>{{ latest_article.views }}</small>
-                                        <small class="mr-3"><i class="far fa-comment ml-2"></i>{{ latest_article.comments.count }}</small>
+                                        <small class="mr-3"><i class="far fa-eye ml-2"></i> {{ latest_article.views }}</small>
+                                        <small><i class="far fa-comment ml-2"></i> {{ latest_article.comments.count }}</small>
                                     </div>
                                 </div>
                             </div>
@@ -448,6 +478,7 @@
                         {% endfor %}
                     </div>
                 </div>
+                <!-- Latest News End -->
                 
                 <!-- Sidebar -->
                 <div class="col-lg-4">
@@ -535,7 +566,7 @@
             </div>
         </div>
     </div>
-    <!-- News With Sidebar End -->
+<!-- News With Sidebar End -->
 
   {% endblock %}
 {% endif %} 
