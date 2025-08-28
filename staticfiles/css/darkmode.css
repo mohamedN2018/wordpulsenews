@@ -1,95 +1,160 @@
+/* 🌞 الوضع العادي */
 .dark-mode {
-          background-color: #121212;
-          color: white;
-        }
-        /* تصميم الزر */
-        .dark-mode-btn {
-          position: fixed;
-          z-index: 9999;
-          top: 70px;
-          right: 20px;
-          background: none;
-          border: none;
-          font-size: 24px;
-          cursor: pointer;
-          transition: transform 0.3s ease;
-        }
-        .dark-mode-btn:hover {
-          transform: scale(1.2);
-        }
-        body.dark-mode {
-            background: #181a1b !important;
-            color: #e0e0e0 !important;
-        }
+    background-color: #121212;
+    color: white;
+}
 
-        body.dark-mode .navbar {
-            background: #23272b !important;
-            color: #fff !important;
-            padding: 15px;
-        }
+/* زر تفعيل الوضع الداكن */
+.dark-mode-btn {
+    padding: 0px 20px;
+    z-index: 9999;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+.dark-mode-btn:hover {
+    transform: scale(1.2);
+}
 
-        body.dark-mode .navbar .navbar-brand,
-        body.dark-mode .navbar .nav-link,
-        body.dark-mode .navbar .dropdown-toggle {
-            color: #fff !important;
-        }
+/* تنسيقات عامة للوضع العادي */
+.header-custom {
+    background: #ffffff;
+    color: #000000;
+}
 
-        body.dark-mode .navbar .nav-link.active {
-            color: #ffd700 !important;
-        }
+/* 🌙 الوضع الداكن */
+body.dark-mode {
+    background: #181a1b !important;
+    color: #e0e0e0 !important;
+}
 
-        body.dark-mode .dropdown-menu {
-            background: #23272b;
-            color: #fff;
-        }
+/* النافبار */
+body.dark-mode .navbar {
+    background: #23272b !important;
+    color: #fff !important;
+    padding: 15px;
+}
+body.dark-mode .navbar .navbar-brand,
+body.dark-mode .navbar .nav-link,
+body.dark-mode .navbar .dropdown-toggle {
+    color: #fff !important;
+}
+body.dark-mode .navbar .nav-link.active {
+    color: #ffd700 !important;
+}
 
-        body.dark-mode .dropdown-item {
-            color: #fff;
-        }
+/* القوائم المنسدلة */
+body.dark-mode .dropdown-menu {
+    background: #23272b;
+    color: #fff;
+}
+body.dark-mode .dropdown-item {
+    color: #fff;
+}
+body.dark-mode .dropdown-item:hover {
+    background: #343a40;
+}
 
-        body.dark-mode .dropdown-item:hover {
-            background: #343a40;
-        }
+/* الصور */
+body.dark-mode .carousel-inner img,
+body.dark-mode .hero img,
+body.dark-mode .category .card-img-top {
+    filter: brightness(0.85);
+}
 
-        body.dark-mode .carousel-inner img,
-        body.dark-mode .hero img,
-        body.dark-mode .category .card-img-top {filter: brightness(0.85);}
-        body.dark-mode .container-fluid,
-        body.dark-mode .section-title,
-        body.dark-mode .card .position-relative .mb-3,
-        body.dark-mode .services,
-        body.dark-mode .contact,
-        body.dark-mode .about{
-            background: #23272b !important;
-            color: #e0e0e0 !important;
-            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.4);
-        }
+/* أقسام المحتوى */
+body.dark-mode .container-fluid,
+body.dark-mode .section-title,
+body.dark-mode .card .position-relative .mb-3,
+body.dark-mode .services,
+body.dark-mode .contact,
+body.dark-mode .about {
+    background: #23272b !important;
+    color: #e0e0e0 !important;
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.4);
+}
 
-        body.dark-mode .footer {
-            background: #181a1b !important;
-            color: #fff !important;
-        }
+/* الفوتر */
+body.dark-mode .footer {
+    background: #181a1b !important;
+    color: #fff !important;
+}
 
-        body.dark-mode .btn-primary {
-            background: linear-gradient(90deg,
-          #0056b3 60%,
-          #007bff 100%) !important;
-        }
+/* الأزرار */
+body.dark-mode .btn-primary {
+    background: linear-gradient(90deg, #0056b3 60%, #007bff 100%) !important;
+}
+body.dark-mode .btn-outline-primary {
+    border-color: #007bff !important;
+    color: #fff !important;
+}
+body.dark-mode .btn-outline-primary:hover {
+    background: #007bff !important;
+    color: #fff !important;
+}
 
-        body.dark-mode .btn-outline-primary {
-            border-color: #007bff !important;
-            color: #fff !important;
-        }
+/* الحقول */
+body.dark-mode input,
+body.dark-mode textarea {
+    background: #23272b !important;
+    color: #fff !important;
+    border-color: #444 !important;
+}
 
-        body.dark-mode .btn-outline-primary:hover {
-            background: #007bff !important;
-            color: #fff !important;
-        }
+/* 🔹 تخصيص الهيدر */
+body.dark-mode .header-custom {
+    background: #23272b !important;
+    color: #e0e0e0 !important;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.4);
+}
 
-        body.dark-mode input,
-        body.dark-mode textarea {
-            background: #23272b !important;
-            color: #fff !important;
-            border-color: #444 !important;
-        }
+/* النص الثانوي في الهيدر */
+body.dark-mode .header-custom .site-subtitle {
+    color: #e0e0e0 !important;
+}
+
+/* الإعلان يفضل يكون واضح */
+body.dark-mode .header-custom .ad-banner {
+    background: #ffffff;
+    padding: 2px;
+    border-radius: 6px;
+}
+body.dark-mode .header-custom .ad-banner a {
+    color: #000000 !important;
+    font-weight: bold;
+}
+body.dark-mode .bg-white {
+    background-color: var(--card-bg) !important;
+    background: #2e2e2f !important;
+    color: #ffffff !important;
+}
+
+body.dark-mode .text-secondary {
+    color: #ffffff !important;
+}
+body.dark-mode .text-uppercase {
+    color: #ffffff !important;
+}
+
+body.dark-mode .text-muted {
+    color: #ffffff !important;
+}
+
+body.dark-mode h2 {
+    color: #ffffff !important;
+}
+body.dark-mode .btn-outline-secondary {
+    color: #ffffff !important;
+}
+
+body.dark-mode .btn-outline-secondary:hover {
+    background: #007bff !important;
+    color: #fff !important;
+}
+
+body.dark-mode .btn-border {
+    color: #ff0000 !important;
+}
 

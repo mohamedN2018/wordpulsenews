@@ -7,11 +7,7 @@
 /* زر تفعيل الوضع الداكن */
 .dark-mode-btn {
     padding: 0px 20px;
-    /* position: fixed; */
     z-index: 9999;
-    /* bottom: 20px; */
-    /* top: 70px; */
-    /* right: 20px; */
     background: none;
     border: none;
     font-size: 24px;
