@@ -36,9 +36,11 @@ CSRF_TRUSTED_ORIGINS = [
 # API KEYS
 # =========================
 OPENAI_API_KEY = config("OPENAI_API_KEY")
-OPENROUTER_API_KEY = config("OPENROUTER_API_KEY")
-YOUTUBE_API_KEY = config("YOUTUBE_API_KEY")
-FB_ACCESS_TOKEN = config("FB_ACCESS_TOKEN")
+OPENROUTER_API_KEY = config("OPENROUTER_API_KEY", default=None)
+YOUTUBE_API_KEY = config("YOUTUBE_API_KEY", default=None)
+FB_ACCESS_TOKEN = config("FB_ACCESS_TOKEN", default=None)
+
+client = OpenAI(api_key=OPENAI_API_KEY)
 
 
 # =========================

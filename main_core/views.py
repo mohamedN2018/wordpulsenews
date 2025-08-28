@@ -13,6 +13,14 @@ from django.contrib.auth.decorators import login_required
 from contact.models import SocialMediaIcon, InformationContact
 from django.conf import settings
 import requests
+from django.contrib.auth.models import User
+import json
+from django.http import JsonResponse
+from openai import OpenAI
+from decouple import config
+import os
+
+client = OpenAI(api_key=config("OPENAI_API_KEY"))
 
 def home(request, category_slug=None):
     photos = FlickrPhoto.objects.all().order_by('-created_at')[:12]  # آخر 6 صور
@@ -215,53 +223,81 @@ def unique_slug(title):
     return slug
 
 def generate_ai_article(request, category_slug):
-    photos = FlickrPhoto.objects.all().order_by('-created_at')[:12]  # آخر 6 صور
-    # جلب كل التصنيفات
+    photos = FlickrPhoto.objects.all().order_by('-created_at')[:12]
     categories = NewsCategory.objects.all()
-    # جلب معلومات الاتصال
     information = InformationContact.objects.first()
     icon = SocialMediaIcon.objects.all()
-
     category = get_object_or_404(NewsCategory, slug=category_slug)
     popular_articles = NewsArticle.objects.order_by('-views')[:6]
 
-
     if request.method == "POST":
-        # ✅ AI يولد العنوان + المقال
-        ai_title, ai_content = generate_article_content(category.name, auto_title=True)
-        # توليد slug فريد
-        slug = unique_slug(ai_title)
+        try:
+            prompt = f"""
+            اكتب مقال احترافي عن مجال: {category.name}.
+            ارجع النتيجة كـ JSON بالصيغة التالية فقط:
+            {{
+                "title": "عنوان قصير وجذاب",
+                "content": "المقال هنا..."
+            }}
+            """
 
-        # محاولة إيجاد مقال بنفس العنوان
-        article, created = NewsArticle.objects.get_or_create(
-            slug=slug,
-            defaults={
-                "category": category,
-                "title": ai_title,
-                "content": ai_content,
-                "author": request.user,
+            response = client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=[{"role": "user", "content": prompt}],
+                temperature=0.7,
+            )
 
-            }
-        )
-        article.save()
+            ai_text = response.choices[0].message.content.strip()
 
-        # إذا تم إنشاء المقال أو الصورة جديدة، احفظ الصورة
-        img_temp = generate_article_image(ai_title)
-        if img_temp:
-            article.image.save(f"{slug}.png", ContentFile(img_temp.read()), save=True)
+            # نحاول نفك JSON
+            try:
+                data = json.loads(ai_text)
+                ai_title = data.get("title", "").strip()
+                ai_content = data.get("content", "").strip()
+            except json.JSONDecodeError:
+                ai_title = f"مقال عن {category.name}"
+                ai_content = ai_text
 
-        return redirect("main_core:article_detail", slug=article.slug)
+            from .utils import unique_slug
+            slug = unique_slug(ai_title)
 
+            admin_user = User.objects.filter(is_superuser=True).first()
+            if not admin_user:
+                raise ValueError("⚠️ لازم يكون فيه مستخدم admin في قاعدة البيانات!")
+
+            article, created = NewsArticle.objects.get_or_create(
+                slug=slug,
+                defaults={
+                    "category": category,
+                    "title": ai_title,
+                    "content": ai_content,
+                    "author": admin_user,
+                }
+            )
+
+            return JsonResponse(
+                {"title": ai_title, "content": ai_content, "slug": article.slug},
+                json_dumps_params={'ensure_ascii': False}  # ✅ الحل
+            )
+
+        except Exception as e:
+            return JsonResponse(
+                {"error": f"خطأ أثناء توليد المقال: {str(e)}"},
+                status=500,
+                json_dumps_params={'ensure_ascii': False}  # ✅ مهم جداً
+            )
+
+    # GET
     context = {
         "category": category,
         "photos": photos,
         "categories": categories,
         "information": information,
         "icon": icon,
-        "popular_articles": popular_articles
+        "popular_articles": popular_articles,
     }
-
     return render(request, "generate_ai_article.html", context)
+
 
 
 
