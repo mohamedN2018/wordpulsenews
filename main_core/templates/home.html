@@ -2,6 +2,7 @@
 {% load static %}
 {% load i18n %}
 
+
 {% if LANGUAGE_CODE == 'ar' %}
   {% block content_ar %}
 <!-- السلايدر الرئيسي للأخبار - البداية -->
@@ -97,6 +98,7 @@
 <!-- Breaking News End -->
 
 <!-- بداية شريط الأخبار المميزة -->
+<!-- Featured News Slider Start -->
 <div class="container-fluid pt-5 mb-3">
     <div class="container">
         <div class="section-title">
@@ -110,6 +112,8 @@
                 {% else %}
                     <img class="img-fluid h-100" src="{% static 'img/news-110x110-1.jpg' %}" style="object-fit: cover;">
                 {% endif %}
+
+                <!-- أوفرلاي -->
                 <div class="overlay d-flex flex-column justify-content-end p-3">
                     <div class="mb-2">
                         <!-- الفئة -->
@@ -117,17 +121,17 @@
                             {{ article.category.name }}
                         </a>
                         <!-- التاريخ -->
-                        <a class="text-white" href="">
+                        <a class="date-link" href="">
                             <small><i class="fa fa-clock ml-1"></i> {{ article.created_at|date:"d M, Y" }}</small>
                         </a>
                     </div>
                     <!-- العنوان -->
-                    <a class="h6 m-0 text-white text-uppercase font-weight-semi-bold" 
+                    <a class="h6 m-0 news-title text-uppercase font-weight-semi-bold" 
                        href="{% url 'main_core:article_detail' article.slug %}">
                         {{ article.title }}
                     </a>
                     <!-- المشاهدات والتعليقات -->
-                    <div class="d-flex align-items-center mt-2 text-white">
+                    <div class="d-flex align-items-center mt-2 info-meta">
                         <small class="mr-3">
                             <i class="far fa-eye ml-1"></i> {{ article.views }} مشاهدة
                         </small>
@@ -142,7 +146,6 @@
     </div>
 </div>
 <!-- نهاية شريط الأخبار المميزة -->
-
 
 <!-- الأخبار مع الشريط الجانبي - البداية -->
 <div class="container-fluid"> 
@@ -535,4 +538,4 @@
     <!-- News With Sidebar End -->
 
   {% endblock %}
-{% endif %}
+{% endif %} 

@@ -2,64 +2,107 @@
 {% load i18n %}
 
 {% if LANGUAGE_CODE == 'ar' %}
-    <!-- شريط التنقل بداية -->
-    <div class="container-fluid p-0" style="position: sticky; top: 0; z-index: 100; overflow: hidden;" dir="rtl">
-        <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-2 py-lg-0 px-lg-5">
-            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-between px-0 px-lg-3" id="navbarCollapse">
-                <div class="navbar-nav ml-auto py-0">
-                    <a href="{% url 'main_core:home' %}" class="nav-item nav-link active">الرئيسية</a>
-                    {% for NewsCategory in categories %}
-                    <a href="{% url 'main_core:category_list' NewsCategory.slug %}" class="nav-item nav-link">{% trans NewsCategory.name %}</a>
-                    {% endfor %}
-                </div>
-                <div class="input-group mr-auto d-none d-lg-flex" style="width: 100%; max-width: 300px;">
-                        <!-- البحث -->
-                        <form class="d-flex" role="search" method="get" action="{% url 'main_core:search_articles' %}">
-                        <input class="form-control me-2" type="search" name="q" placeholder="ابحث عن خبر..." aria-label="Search">
-                        <button class="input-group-text bg-primary text-dark border-0 px-3" type="submit"><i class="fa fa-search">بحث</i></button>
-                        </form>
-                </div>
-            </div>
-        </nav>
-    </div>
-    <!-- شريط التنقل نهاية -->
-{% else %}
-<!-- Navbar Start -->
-<div class="container-fluid p-0" style="position: sticky; top: 0; z-index: 100;" dir="ltr">
-    <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-2 py-lg-0 px-lg-5">
-        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        
-        <div class="collapse navbar-collapse justify-content-between px-0 px-lg-3" id="navbarCollapse">
-            
-            <!-- Links -->
-            <div class="navbar-nav py-0">
-                <a href="{% url 'main_core:home' %}" class="nav-item nav-link active">Home</a>
-                {% for NewsCategory in categories %}
-                    <a href="{% url 'main_core:category_list' NewsCategory.slug %}" 
-                       class="nav-item nav-link">{% trans NewsCategory.name %}</a>
-                {% endfor %}
-            </div>
-            
-            <!-- Search -->
-            <div class="input-group ml-auto d-none d-lg-flex" style="width: 100%; max-width: 300px;">
-                <form class="d-flex w-100" role="search" method="get" action="{% url 'main_core:search_articles' %}">
-                    <input class="form-control" type="search" name="q" placeholder="Search for news..." aria-label="Search">
-                    <button class="input-group-text bg-primary text-dark border-0 px-3" type="submit">
-                        <i class="fa fa-search"></i>
-                    </button>
-                </form>
-            </div>
+<!-- شريط التنقل (AR) -->
+<div class="container-fluid p-0" style="position: sticky; top: 0; z-index: 100;" dir="rtl">
+  <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-2 px-lg-5">
 
+    <!-- زرار الموبايل -->
+    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapseAR">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-between" id="navbarCollapseAR">
+      
+      <!-- الروابط -->
+      <div class="navbar-nav ml-auto py-0">
+            <!-- Dark Mode Toggle -->
+        <button id="darkModeToggle" class="dark-mode-btn">🌙</button>
+
+        <a href="{% url 'main_core:home' %}" class="nav-item nav-link active">الرئيسية</a>
+        
+        {# أول 4 تصنيفات فقط للموبايل #}
+        {% for NewsCategory in categories|slice:":4" %}
+          <a href="{% url 'main_core:category_list' NewsCategory.slug %}" 
+             class="nav-item nav-link">{% trans NewsCategory.name %}</a>
+        {% endfor %}
+
+        {# باقي التصنيفات في منيو منسدلة #}
+        {% if categories|length > 4 %}
+        <div class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">المزيد</a>
+          <div class="dropdown-menu bg-dark border-0">
+            {% for NewsCategory in categories|slice:"4:" %}
+              <a href="{% url 'main_core:category_list' NewsCategory.slug %}" 
+                 class="dropdown-item text-light">{% trans NewsCategory.name %}</a>
+            {% endfor %}
+          </div>
         </div>
-    </nav>
+        {% endif %}
+      </div>
+
+      <!-- البحث -->
+      <div class="input-group mr-auto mt-2 mt-lg-0 d-lg-flex" style="max-width: 300px;">
+        <form class="d-flex w-100" role="search" method="get" action="{% url 'main_core:search_articles' %}">
+          <input class="form-control" type="search" name="q" placeholder="ابحث عن خبر..." aria-label="Search">
+          <button class="input-group-text bg-primary text-dark border-0 px-3" type="submit">
+            <i class="fa fa-search"></i>
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </nav>
+</div>
+<!-- شريط التنقل نهاية -->
+
+{% else %}
+<!-- Navbar (EN) -->
+<div class="container-fluid p-0" style="position: sticky; top: 0; z-index: 100;" dir="ltr">
+  <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-2 px-lg-5">
+
+    <!-- Mobile Toggle -->
+    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapseEN">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-between" id="navbarCollapseEN">
+
+      <!-- Links -->
+      <div class="navbar-nav py-0">
+        <a href="{% url 'main_core:home' %}" class="nav-item nav-link active">Home</a>
+        
+        {# First 4 categories only for mobile #}
+        {% for NewsCategory in categories|slice:":4" %}
+          <a href="{% url 'main_core:category_list' NewsCategory.slug %}" 
+             class="nav-item nav-link">{% trans NewsCategory.name %}</a>
+        {% endfor %}
+
+        {# Rest go inside dropdown #}
+        {% if categories|length > 4 %}
+        <div class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">More</a>
+          <div class="dropdown-menu bg-dark border-0">
+            {% for NewsCategory in categories|slice:"4:" %}
+              <a href="{% url 'main_core:category_list' NewsCategory.slug %}" 
+                 class="dropdown-item text-light">{% trans NewsCategory.name %}</a>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Search -->
+      <div class="input-group ml-auto mt-2 mt-lg-0 d-lg-flex" style="max-width: 300px;">
+        <form class="d-flex w-100" role="search" method="get" action="{% url 'main_core:search_articles' %}">
+          <input class="form-control" type="search" name="q" placeholder="Search for news..." aria-label="Search">
+          <button class="input-group-text bg-primary text-dark border-0 px-3" type="submit">
+            <i class="fa fa-search"></i>
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </nav>
 </div>
 <!-- Navbar End -->
 {% endif %}
-
-
-

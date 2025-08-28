@@ -2,33 +2,50 @@
 {% load i18n %}
 
 {% if LANGUAGE_CODE == 'ar' %}
+<!-- Header (AR) -->
+<div class="row align-items-center header-custom py-3 px-lg-5" dir="rtl">
 
-<div class="row align-items-center bg-white py-3 px-lg-5" dir="rtl">
-    <div class="col-lg-4 text-right">
-        <a href="{% url 'main_core:home' %}" class="navbar-brand p-0 d-none d-lg-block">
-            <h1 class="m-0 display-4 text-uppercase text-primary">
-                اخبار<span class="text-secondary font-weight-normal"> نبض العالم</span>
+    <!-- اللوجو -->
+    <div class="col-12 col-lg-4 text-center text-lg-right mb-3 mb-lg-0">
+        <a href="{% url 'main_core:home' %}" class="navbar-brand p-0">
+            <h1 class="m-0 display-5 text-uppercase text-primary fw-bold">
+                اخبار<span class="site-subtitle fw-normal"> نبض العالم</span>
             </h1>
         </a>
     </div>
-    <div class="col-lg-8 text-center text-lg-left">
-        <a><img class="img-fluid" src="{% static 'img/ads-728x90.png' %}" alt="إعلان"></a>
-    </div>                          
+
+    <!-- الإعلان -->
+    <div class="col-12 col-lg-8 text-center text-lg-left">
+        <a>
+            <img class="img-fluid rounded shadow-sm ad-banner" 
+                 src="{% static 'img/ads-728x90.png' %}" alt="إعلان">
+        </a>
+    </div>
+
 </div>
+<!-- End Header (AR) -->
 
 {% else %}
+<!-- Header (EN) -->
+<div class="row align-items-center header-custom py-3 px-lg-5">
 
-<div class="row align-items-center bg-white py-3 px-lg-5">
-    <div class="col-lg-4">
-        <a href="{% url 'main_core:home' %}" class="navbar-brand p-0 d-none d-lg-block">
-            <h1 class="m-0 display-4 text-uppercase text-primary">
-                World<span class="text-secondary font-weight-normal">Pulse News</span>
+    <!-- Logo -->
+    <div class="col-12 col-lg-4 text-center text-lg-left mb-3 mb-lg-0">
+        <a href="{% url 'main_core:home' %}" class="navbar-brand p-0">
+            <h1 class="m-0 display-5 text-uppercase text-primary fw-bold">
+                World<span class="site-subtitle fw-normal"> Pulse News</span>
             </h1>
         </a>
     </div>
-    <div class="col-lg-8 text-center text-lg-right">
-        <a><img class="img-fluid" src="{% static 'img/ads-728x90.png' %}" alt="Ads"></a>
-    </div>                          
-</div>
 
+    <!-- Ads -->
+    <div class="col-12 col-lg-8 text-center text-lg-right">
+        <a>
+            <img class="img-fluid rounded shadow-sm ad-banner" 
+                 src="{% static 'img/ads-728x90.png' %}" alt="Ads">
+        </a>
+    </div>
+
+</div>
+<!-- End Header (EN) -->
 {% endif %}

@@ -3,158 +3,146 @@
 
 {% if LANGUAGE_CODE == 'ar' %}
 
+<!-- Topbar Start (AR) -->
+<div class="container-fluid bg-dark py-2">
+  <div class="row align-items-center px-lg-5 text-center text-md-right">
 
-
-
- <!-- Topbar Start -->
-    <div class="container-fluid d-none d-lg-block">
-        <div class="row align-items-center bg-dark px-lg-5">
-
-            <div class="col-lg-3 d-none d-md-block d-flex justify-content-start">
-                <nav class="navbar navbar-expand-sm bg-dark p-0 d-flex justify-content-start">
-                    <ul class="navbar-nav ml-auto mr-n2">
-                    {% for icon in social_media_icons %}
-                        <li class="nav-item">
-                            <a class="nav-link text-body" href="{{ icon.link }}"><small class="fab {{ icon.icon_name }}"></small></a>
-                        </li>
-                    {% endfor %}
-                    </ul>
-                </nav>
-            </div>
-
-            <div class="col-lg-9 d-flex justify-content-end">
-                <nav class="navbar navbar-expand-sm bg-dark p-0">
-                <ul class="navbar-nav ml-n2">
-                    <li class="nav-item border-right border-secondary">
-                       <a class="nav-link text-body small" id="clock"></a>
-                   </li>
-                    <li class="nav-item border-right border-secondary">
-                        <a class="nav-link text-body small" href="#">إعلانات</a>
-                    </li>
-                    <li class="nav-item border-right border-secondary">
-                        <a class="nav-link text-body small" href="{% url 'contact:contact_home' %}">اتصل بنا</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-body small" href="{% url 'login' %}">تسجيل الدخول</a>
-                    </li>
-                </ul>
-                          <div class="cta">
-                            <div class="scrollto" >
-                              <form action="{% url 'set_language' %}" method="post">
-                                    {% csrf_token %}
-                                    <input class="drop-down" name="next" type="hidden" value="{{ request.get_full_path|slice:'3:' }}">
-                                    <select class="drop-down text-center" style="position: relative; display: inline-block;background-color: #464f58;border-radius: 20px; border: 0px double #cccccc;color: #eeeeee;font-size: 13px;width: 100px;height: 24px;" name="language">
-                                        {% get_current_language as LANGUAGE_CODE %}
-                                        {% get_available_languages as LANGUAGES %}
-                                        {% get_language_info_list for LANGUAGES as languages %}
-                                        {% for language in languages %}
-                                            <option value="{{ language.code }}"
-                                                    {% if language.code == LANGUAGE_CODE %} selected{% endif %}>
-                                                {{ language.name_local }} ({{ language.code }})
-                                            </option>
-                                        {% endfor %}
-                                    </select>
-                                    <input class="filter-active" style="display: inline-block;background-color: #313a44;border-radius: 45px; border: 0px double #cccccc;color: #eeeeee;font-size: 13px;width: 38px;height: 24px;" type="submit" value="Go">
-                               </form>
-                                </div>
-                        </div>
-                </nav>
-            </div>
-
-
-
-
-
-        </div>
+    <!-- أيقونات السوشيال -->
+    <div class="col-12 col-md-3 mb-2 mb-md-0 d-flex justify-content-center justify-content-md-start">
+      <nav class="navbar p-0">
+        <ul class="navbar-nav flex-row">
+          {% for icon in social_media_icons %}
+          <li class="nav-item mx-2">
+            <a class="nav-link text-light p-0" href="{{ icon.link }}">
+              <small class="fab {{ icon.icon_name }}"></small>
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+      </nav>
     </div>
-    <!-- Topbar End -->
 
+    <!-- اللينكات + اللغة -->
+    <div class="col-12 col-md-9 d-flex flex-column flex-md-row justify-content-center justify-content-md-end align-items-center">
+      <ul class="navbar-nav flex-row mb-2 mb-md-0">
+        <li class="nav-item border-md-right border-secondary px-2">
+          <a class="nav-link text-light small" id="clock"></a>
+        </li>
+        <li class="nav-item border-md-right border-secondary px-2">
+          <a class="nav-link text-light small" href="#">إعلانات</a>
+        </li>
+        <li class="nav-item border-md-right border-secondary px-2">
+          <a class="nav-link text-light small" href="{% url 'contact:contact_home' %}">اتصل بنا</a>
+        </li>
+        <li class="nav-item px-2">
+          <a class="nav-link text-light small" href="{% url 'login' %}">تسجيل الدخول</a>
+        </li>
+      </ul>
 
-    {% block scripts_ar %}
-        <script>
-            function updateClock() {
-                const now = new Date();
-                document.getElementById("clock").innerHTML =
-                    now.toLocaleDateString() + " - " + now.toLocaleTimeString();
-            }
-            setInterval(updateClock, 1000);
-            updateClock();
-        </script>
-    {% endblock %}
+      <!-- اختيار اللغة -->
+      <form action="{% url 'set_language' %}" method="post" class="d-flex align-items-center ms-md-3">
+        {% csrf_token %}
+        <input name="next" type="hidden" value="{{ request.get_full_path|slice:'3:' }}">
+        <select class="form-select form-select-sm bg-secondary text-light rounded-pill me-2" name="language">
+          {% get_current_language as LANGUAGE_CODE %}
+          {% get_available_languages as LANGUAGES %}
+          {% get_language_info_list for LANGUAGES as languages %}
+          {% for language in languages %}
+          <option value="{{ language.code }}" {% if language.code == LANGUAGE_CODE %} selected {% endif %}>
+            {{ language.name_local }}
+          </option>
+          {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-sm btn-outline-light rounded-pill">Go</button>
+      </form>
+    </div>
 
+  </div>
+</div>
+<!-- Topbar End (AR) -->
+
+{% block scripts_ar %}
+<script>
+  function updateClock() {
+    const now = new Date();
+    document.getElementById("clock").innerHTML =
+      now.toLocaleDateString() + " - " + now.toLocaleTimeString();
+  }
+  setInterval(updateClock, 1000);
+  updateClock();
+</script>
+{% endblock %}
 
 {% else %}
 
+<!-- Topbar Start (EN) -->
+<div class="container-fluid bg-dark py-2">
+  <div class="row align-items-center px-lg-5 text-center text-md-left">
 
-
- <!-- Topbar Start -->
-    <div class="container-fluid d-none d-lg-block">
-        <div class="row align-items-center bg-dark px-lg-5">
-            <div class="col-lg-9">
-                <nav class="navbar navbar-expand-sm bg-dark p-0">
-                    <ul class="navbar-nav ml-n2">
-                        <li class="nav-item border-right border-secondary">
-                            <a class="nav-link text-body small" id="clock"></a>
-                        </li>
-                        <li class="nav-item border-right border-secondary">
-                            <a class="nav-link text-body small" href="#">Advertise</a>
-                        </li>
-                        <li class="nav-item border-right border-secondary">
-                            <a class="nav-link text-body small" href="{% url 'contact:contact_home' %}">Contact</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-body small" href="#">Login</a>
-                        </li>
-                    </ul>
-                          <div class="cta">
-                            <div class="scrollto" >
-                              <form action="{% url 'set_language' %}" method="post">
-                                    {% csrf_token %}
-                                    <input class="drop-down" name="next" type="hidden" value="{{ request.get_full_path|slice:'3:' }}">
-                                    <select class="drop-down text-center" style="position: relative; display: inline-block;background-color: #464f58;border-radius: 20px; border: 0px double #cccccc;color: #eeeeee;font-size: 13px;width: 100px;height: 24px;" name="language">
-                                        {% get_current_language as LANGUAGE_CODE %}
-                                        {% get_available_languages as LANGUAGES %}
-                                        {% get_language_info_list for LANGUAGES as languages %}
-                                        {% for language in languages %}
-                                            <option value="{{ language.code }}"
-                                                    {% if language.code == LANGUAGE_CODE %} selected{% endif %}>
-                                                {{ language.name_local }} ({{ language.code }})
-                                            </option>
-                                        {% endfor %}
-                                    </select>
-                                    <input class="filter-active" style="display: inline-block;background-color: #313a44;border-radius: 45px; border: 0px double #cccccc;color: #eeeeee;font-size: 13px;width: 38px;height: 24px;" type="submit" value="Go">
-                               </form>
-                                </div>
-                        </div>
-                </nav>
-            </div>
-            <div class="col-lg-3 text-right d-none d-md-block">
-                <nav class="navbar navbar-expand-sm bg-dark p-0">
-                    <ul class="navbar-nav ml-auto mr-n2">
-                    {% for icon in social_media_icons %}
-                        <li class="nav-item">
-                            <a class="nav-link text-body" href="{{ icon.link }}"><small class="fab {{ icon.icon_name }}"></small></a>
-                        </li>
-                    {% endfor %}
-                    </ul>
-                </nav>
-            </div>
-        </div>
+    <!-- Social Media -->
+    <div class="col-12 col-md-3 mb-2 mb-md-0 d-flex justify-content-center justify-content-md-start">
+      <nav class="navbar p-0">
+        <ul class="navbar-nav flex-row">
+          {% for icon in social_media_icons %}
+          <li class="nav-item mx-2">
+            <a class="nav-link text-light p-0" href="{{ icon.link }}">
+              <small class="fab {{ icon.icon_name }}"></small>
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+      </nav>
     </div>
-    <!-- Topbar End -->
 
+    <!-- Links + Language -->
+    <div class="col-12 col-md-9 d-flex flex-column flex-md-row justify-content-center justify-content-md-end align-items-center">
+      <ul class="navbar-nav flex-row mb-2 mb-md-0">
+        <li class="nav-item border-md-right border-secondary px-2">
+          <a class="nav-link text-light small" id="clock"></a>
+        </li>
+        <li class="nav-item border-md-right border-secondary px-2">
+          <a class="nav-link text-light small" href="#">Advertise</a>
+        </li>
+        <li class="nav-item border-md-right border-secondary px-2">
+          <a class="nav-link text-light small" href="{% url 'contact:contact_home' %}">Contact</a>
+        </li>
+        <li class="nav-item px-2">
+          <a class="nav-link text-light small" href="{% url 'login' %}">Login</a>
+        </li>
+      </ul>
+
+      <!-- Language Switch -->
+      <form action="{% url 'set_language' %}" method="post" class="d-flex align-items-center ms-md-3">
+        {% csrf_token %}
+        <input name="next" type="hidden" value="{{ request.get_full_path|slice:'3:' }}">
+        <select class="form-select form-select-sm bg-secondary text-light rounded-pill me-2" name="language">
+          {% get_current_language as LANGUAGE_CODE %}
+          {% get_available_languages as LANGUAGES %}
+          {% get_language_info_list for LANGUAGES as languages %}
+          {% for language in languages %}
+          <option value="{{ language.code }}" {% if language.code == LANGUAGE_CODE %} selected {% endif %}>
+            {{ language.name_local }}
+          </option>
+          {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-sm btn-outline-light rounded-pill">Go</button>
+      </form>
+    </div>
+
+  </div>
+</div>
+<!-- Topbar End (EN) -->
 
 {% block scripts_en %}
-    <script>
-        function updateClock() {
-            const now = new Date();
-            document.getElementById("clock").innerHTML =
-                now.toLocaleDateString() + " - " + now.toLocaleTimeString();
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
-    </script>
+<script>
+  function updateClock() {
+    const now = new Date();
+    document.getElementById("clock").innerHTML =
+      now.toLocaleDateString() + " - " + now.toLocaleTimeString();
+  }
+  setInterval(updateClock, 1000);
+  updateClock();
+</script>
 {% endblock %}
 
 {% endif %}
-
