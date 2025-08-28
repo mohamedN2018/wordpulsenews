@@ -11,6 +11,7 @@ openai = "*"
 django-jazzmin = "*"
 python-decouple = "*"
 gunicorn = "*"
+whitenoise = "*"
 
 [dev-packages]
 

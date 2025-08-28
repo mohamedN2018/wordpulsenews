@@ -50,7 +50,11 @@
                             </div>
                             <div class="d-flex justify-content-between bg-white border border-top-0 p-4">
                                 <div class="d-flex align-items-center">
+                                    {% if article.user.profile.picture %}
+                                    <img class="rounded-circle ml-2" src="{{ article.user.profile.picture.url }}" width="25" height="25" alt="كاتب">
+                                    {% else  %}
                                     <img class="rounded-circle ml-2" src="{% static 'img/user.jpg' %}" width="25" height="25" alt="كاتب">
+                                    {% endif %}
                                     <span>{{ article.author }}</span>
                                 </div>
                                 <div class="d-flex align-items-center">
@@ -70,7 +74,11 @@
                                 {% if article.comments.exists %}
                                     {% for comment in article.comments.all %}
                                         <div class="media mb-4">
+                                            {% if comment.user.profile.picture %}
+                                            <img src="{{ comment.user.profile.picture.url }}" alt="صورة" class="img-fluid ml-3 mt-1" style="width: 45px;">
+                                            {% else %}
                                             <img src="{% static 'img/user.jpg' %}" alt="صورة" class="img-fluid ml-3 mt-1" style="width: 45px;">
+                                            {% endif %}
                                             <div class="media-body">
                                                 <h6><a class="text-secondary font-weight-bold" href="">{{ comment.user }} <br></a><small><i>{{ comment.created_at|date:"d M, Y" }}</i></small></h6>
                                                 <p>{{ comment.content|safe }}</p>
