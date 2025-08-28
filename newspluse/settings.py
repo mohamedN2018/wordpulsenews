@@ -145,32 +145,32 @@ LOCALE_PATHS = [
 # # Static files (CSS, JavaScript, Images)
 # # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-# STATIC_URL = '/static/'
+STATIC_URL = '/static/'
 
-# STATICFILES_DIRS = [
-#     BASE_DIR / "static",
-#     "/usr/src/app/static/",
-# ]
-# MEDIA_URL = '/media/'
-# MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+STATICFILES_DIRS = [
+    BASE_DIR / "static",
+    "/usr/src/app/static/",
+]
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
 
-# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  
 
 
 
 # =========================
 # STATIC & MEDIA FILES
 # =========================
-STATIC_URL = "/static/"
-STATICFILES_DIRS = [
-    BASE_DIR / "static",   # فولدر static الأساسي
-]
-STATIC_ROOT = BASE_DIR / "staticfiles"   # الملفات بعد collectstatic
+# STATIC_URL = "/static/"
+# STATICFILES_DIRS = [
+#     BASE_DIR / "static",   # فولدر static الأساسي
+# ]
+# STATIC_ROOT = BASE_DIR / "staticfiles"   # الملفات بعد collectstatic
 
-MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
+# MEDIA_URL = "/media/"
+# MEDIA_ROOT = BASE_DIR / "media"
 
 
 # =========================

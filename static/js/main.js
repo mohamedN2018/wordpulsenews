@@ -161,3 +161,109 @@
     
 })(jQuery);
 
+(function () {
+  "use strict";
+
+  // helper: safe console
+  var log = function () {
+    if (window.console && console.log) {
+      console.log.apply(console, arguments);
+    }
+  };
+
+  // wait for DOM
+  function onReady(fn) {
+    if (document.readyState !== "loading") {
+      fn();
+    } else {
+      document.addEventListener("DOMContentLoaded", fn);
+    }
+  }
+
+  onReady(function () {
+    // ======= basic checks =======
+    if (typeof jQuery === "undefined") {
+      log("ERROR: jQuery not found — please include jQuery before main.js");
+      return;
+    }
+
+    var $ = jQuery;
+
+    if (typeof $.fn === "undefined" || typeof $.fn.owlCarousel === "undefined") {
+      log("ERROR: Owl Carousel plugin not found — include owl.carousel.min.js before main.js");
+      return;
+    }
+
+    // detect RTL from <html dir> or lang
+    var isRTL = (document.documentElement.getAttribute("dir") || "").toLowerCase() === "rtl";
+
+    // ======= main slider (single item) =======
+    if ($("#mainNewsSlider").length) {
+      try {
+        $("#mainNewsSlider").owlCarousel({
+          rtl: isRTL,
+          items: 1,
+          loop: true,
+          margin: 0,
+          nav: true,
+          dots: true,
+          autoplay: true,
+          autoplayTimeout: 5000,
+          autoplayHoverPause: true,
+          navText: ['‹', '›'],
+          smartSpeed: 600,
+          responsiveRefreshRate: 200,
+          lazyLoad: true // if you use data-src lazy images
+        });
+      } catch (e) {
+        log("Owl init error (mainNewsSlider):", e);
+      }
+    }
+
+    // ======= generic carousels with class .news-carousel =======
+    $(".news-carousel").each(function () {
+      var $el = $(this);
+      try {
+        $el.owlCarousel({
+          rtl: isRTL,
+          loop: true,
+          margin: 20,
+          nav: true,
+          dots: false,
+          autoplay: true,
+          autoplayTimeout: 4000,
+          autoplayHoverPause: true,
+          navText: ['‹', '›'],
+          smartSpeed: 600,
+          responsive: {
+            0: { items: 1 },
+            576: { items: 1 },
+            768: { items: 2 },
+            992: { items: 3 },
+            1200: { items: 4 }
+          }
+        });
+      } catch (e) {
+        log("Owl init error (news-carousel):", e);
+      }
+    });
+
+    // ======= small helper: update carousels on direction change =======
+    // if you toggle RTL dynamically, call $(...).trigger('refresh.owl.carousel') on the carousel element.
+
+    // ======= optional: back-to-top behavior (if present) =======
+    var $back = $(".back-to-top");
+    if ($back.length) {
+      $(window).on("scroll", function () {
+        if ($(window).scrollTop() > 300) $back.addClass("show");
+        else $back.removeClass("show");
+      });
+      $back.on("click", function (e) {
+        e.preventDefault();
+        $("html, body").animate({ scrollTop: 0 }, 600);
+      });
+    }
+
+    log("main.js loaded — jQuery & Owl OK, RTL:", isRTL);
+  });
+})();
