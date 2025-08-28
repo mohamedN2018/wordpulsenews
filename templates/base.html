@@ -61,6 +61,7 @@
     <button id="darkModeToggle"class="dark-mode-btn">
     🌙
     </button>
+    
     <script>
         const toggle = document.getElementById("darkModeToggle");
         const body = document.body;
@@ -83,7 +84,32 @@
             toggle.textContent = "☀️";
             }
         });
-        </script>
+   </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+        if (typeof jQuery === 'undefined') {
+            console.error('jQuery غير محمّل — أضف jQuery قبل Owl Carousel');
+            return;
+        }
+        if (typeof jQuery.fn.owlCarousel === 'undefined') {
+            console.error('Owl Carousel غير محمّل — أضف ملفات owl.carousel.min.js');
+            return;
+        }
+
+        jQuery('#mainNewsSlider').owlCarousel({
+            rtl: true,
+            items: 1,
+            loop: true,
+            nav: true,
+            dots: true,
+            autoplay: true,
+            autoplayTimeout: 5000,
+            autoplayHoverPause: true,
+            navText: ['‹','›'],
+        });
+        });
+    </script>
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
