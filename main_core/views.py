@@ -6,10 +6,7 @@ from django.http import HttpResponse
 from django.utils.text import slugify
 from .ai_service import generate_article_content, generate_article_image
 from django.core.files.base import ContentFile
-from django.shortcuts import render, get_object_or_404, redirect
-from django.utils.text import slugify
 from django.db.utils import IntegrityError
-from django.core.files.base import ContentFile
 from django.contrib.auth import get_user_model
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -17,20 +14,26 @@ from contact.models import SocialMediaIcon, InformationContact
 from django.conf import settings
 import requests
 
-
-
 def home(request, category_slug=None):
     photos = FlickrPhoto.objects.all().order_by('-created_at')[:12]  # آخر 6 صور
     breaking_news = NewsArticle.objects.filter(is_breaking=True).order_by('-created_at')[:5]  # آخر 5 أخبار عاجلة
-    # جلب كل التصنيفات
-    categories = NewsCategory.objects.all()
     popular_articles = NewsArticle.objects.order_by('-views')[:6]
-    
-    information = InformationContact.objects.first()
-    icon = SocialMediaIcon.objects.all()
-
     # جلب أحدث المقالات مع التأكد من وجود slug
     latest_articles = NewsArticle.objects.exclude(slug='').order_by('-id')[:9]
+
+    # Main News Slider Start
+    latest_articles_slider = NewsArticle.objects.order_by('-created_at')[:5]
+    main_featured_slider = NewsArticle.objects.filter(is_featured=True).order_by('-created_at')[:5]
+    trending_news_main = NewsArticle.objects.filter(is_trending=True).order_by('-created_at')[:4]
+
+    # TRENDING NEWS
+    trending_news = NewsArticle.objects.filter(is_trending=True).order_by('-created_at')[:5]
+
+    # جلب كل التصنيفات
+    categories = NewsCategory.objects.all()
+    # جلب معلومات الاتصال
+    information = InformationContact.objects.first()
+    icon = SocialMediaIcon.objects.all()
 
     # YouTube API
     api_key = settings.YOUTUBE_API_KEY
@@ -54,6 +57,10 @@ def home(request, category_slug=None):
         "information": information,
         "icon": icon,
         "youtube_subscribers": subscribers,
+        "main_featured_slider": main_featured_slider,
+        "trending_news": trending_news,
+        "latest_articles_slider": latest_articles_slider,
+        "trending_news_main": trending_news_main,
     })
 
 

@@ -4,8 +4,8 @@ from .models import NewsCategory, NewsArticle, Comment, FlickrPhoto
 admin.site.register(NewsCategory)
 
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ('title', 'category', 'is_breaking', 'created_at')
-    list_filter = ('is_breaking', 'category')
+    list_display = ('title', 'category', 'is_breaking', 'is_featured', 'is_trending', 'created_at')
+    list_filter = ('is_breaking', 'is_featured', 'is_trending', 'category')
 
 admin.site.register(NewsArticle, ArticleAdmin)
 

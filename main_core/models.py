@@ -29,7 +29,8 @@ class NewsArticle(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
 
     is_breaking = models.BooleanField(default=False)  # <- هذا الحقل
-
+    is_featured = models.BooleanField(default=False)  # مقالات مميزة
+    is_trending = models.BooleanField(default=False)  # مقالات متداولة
     created_at = models.DateTimeField(auto_now_add=True)
     views = models.PositiveIntegerField(default=0)
 
