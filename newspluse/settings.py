@@ -35,10 +35,8 @@ CSRF_TRUSTED_ORIGINS = [
 # =========================
 # API KEYS
 # =========================
-OPENROUTER_API_KEY = os.getenv(
-    "OPENROUTER_API_KEY",
-    "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"
-)
+OPENAI_API_KEY = config("OPENAI_API_KEY")
+OPENROUTER_API_KEY = config("OPENROUTER_API_KEY")
 YOUTUBE_API_KEY = config("YOUTUBE_API_KEY")
 FB_ACCESS_TOKEN = config("FB_ACCESS_TOKEN")
 
