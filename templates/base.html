@@ -6,125 +6,113 @@
 
 <head>
     <meta charset="utf-8">
-    <title>محمد نبيل </title>
+    <title>محمد نبيل</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-    <meta content="Free HTML Templates" name="keywords">
-    <meta content="Free HTML Templates" name="description">
+    <meta content="WordPulse News" name="keywords">
+    <meta content="WordPulse News Website" name="description">
 
     <!-- Favicon -->
     <link href="{% static 'img/favicon.ico' %}" rel="icon">
 
-    <!-- Google Web Fonts -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">  
 
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.0/css/all.min.css" rel="stylesheet">
 
-    <!-- Libraries Stylesheet -->
+    <!-- Owl Carousel CSS -->
     <link href="{% static 'lib/owlcarousel/assets/owl.carousel.min.css' %}" rel="stylesheet">
     <link href="{% static 'lib/owlcarousel/assets/owl.theme.default.min.css' %}" rel="stylesheet">
 
-    <!-- Customized Bootstrap Stylesheet -->
+    <!-- Custom CSS -->
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
     <link href="{% static 'css/darkmode.css' %}" rel="stylesheet">
     <link href="{% static 'css/custom.css' %}" rel="stylesheet">
-
 </head>
 
 <body>
-    <!-- Topbar Start -->
+    <!-- Topbar + Header + Navbar -->
     {% include 'parts/topbar.html' %}
     {% include 'parts/header.html' %}
     {% include 'parts/navbar.html' %}
 
+    <!-- محتوى الصفحة حسب اللغة -->
     {% if LANGUAGE_CODE == 'ar' %}
-        {% block content_ar %}
-        {% endblock content_ar %}
+        {% block content_ar %}{% endblock content_ar %}
     {% else %}
-        {% block content_en %}
-        {% endblock content_en %}
+        {% block content_en %}{% endblock content_en %}
     {% endif %}
 
-
-    <!-- Footer Start -->
+    <!-- Footer -->
     {% include 'parts/footer.html' %}
-    <!-- Footer End -->
 
-
-    <!-- Back to Top -->
+    <!-- Back to Top Button -->
     <a href="#" class="btn btn-primary btn-square back-to-top"><i class="fa fa-arrow-up"></i></a>
 
+    <!-- Dark Mode Toggle -->
+    <button id="darkModeToggle" class="dark-mode-btn">🌙</button>
 
+    <!-- jQuery لازم يكون قبل أي مكتبة -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 
-            <!-- Dark mode toggle button -->
-    <button id="darkModeToggle"class="dark-mode-btn">
-    🌙
-    </button>
+    <!-- Bootstrap -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
 
+    <!-- مكتبات إضافية -->
+    <script src="{% static 'lib/easing/easing.min.js' %}"></script>
+    <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script>
+
+    <!-- سكربت Dark Mode -->
     <script>
         const toggle = document.getElementById("darkModeToggle");
         const body = document.body;
-        // Load saved mode
 
         if (localStorage.getItem("mode") === "dark") {
             body.classList.add("dark-mode");
             toggle.textContent = "☀️";
-            // Sun icon for light mode
         }
 
         toggle.addEventListener("click", function () {
             body.classList.toggle("dark-mode");
-
             if (body.classList.contains("dark-mode")) {
-            localStorage.setItem("mode", "dark");
-            toggle.textContent = "🌙";
+                localStorage.setItem("mode", "dark");
+                toggle.textContent = "☀️";
             } else {
-            localStorage.setItem("mode", "light");
-            toggle.textContent = "☀️";
+                localStorage.setItem("mode", "light");
+                toggle.textContent = "🌙";
             }
-        });
-   </script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-        if (typeof jQuery === 'undefined') {
-            console.error('jQuery غير محمّل — أضف jQuery قبل Owl Carousel');
-            return;
-        }
-        if (typeof jQuery.fn.owlCarousel === 'undefined') {
-            console.error('Owl Carousel غير محمّل — أضف ملفات owl.carousel.min.js');
-            return;
-        }
-
-        jQuery('#mainNewsSlider').owlCarousel({
-            rtl: true,
-            items: 1,
-            loop: true,
-            nav: true,
-            dots: true,
-            autoplay: true,
-            autoplayTimeout: 5000,
-            autoplayHoverPause: true,
-            navText: ['‹','›'],
-        });
         });
     </script>
 
-    <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-    <script src="{% static 'lib/easing/easing.min.js' %}"></script>
-    <!-- jQuery لازم قبل الـ Owl -->
-    <script src="{% static 'lib/jquery/jquery.min.js' %}"></script>
+    <!-- سكربت Owl Carousel -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            if (typeof jQuery === 'undefined') {
+                console.error('jQuery غير محمّل — لازم تضيف jQuery');
+                return;
+            }
+            if (typeof jQuery.fn.owlCarousel === 'undefined') {
+                console.error('Owl Carousel غير محمّل — لازم تضيف owl.carousel.min.js');
+                return;
+            }
 
-    <!-- Owl Carousel JS -->
-    <script src="{% static 'lib/owlcarousel/owl.carousel.min.js' %}"></script>
+            jQuery('#mainNewsSlider').owlCarousel({
+                rtl: true,
+                items: 1,
+                loop: true,
+                nav: true,
+                dots: true,
+                autoplay: true,
+                autoplayTimeout: 5000,
+                autoplayHoverPause: true,
+                navText: ['‹','›'],
+            });
+        });
+    </script>
 
-    <!-- Template Javascript -->
+    <!-- سكربت الموقع الرئيسي -->
     <script src="{% static 'js/main.js' %}"></script>
 </body>
-
 </html>
-
