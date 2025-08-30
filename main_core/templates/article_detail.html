@@ -5,25 +5,37 @@
 {% if LANGUAGE_CODE == 'ar' %}
     {% block content_ar %}
         <!-- نهاية الأخبار العاجلة -->
-        <div class="container-fluid mt-5 mb-3 pt-3" dir="ltr">
+            <div class="container-fluid mt-5 mb-3 pt-3" dir="ltr">
             <div class="container">
                 <div class="row align-items-center">
-                    <div class="col-12">
-                        <div class="d-flex justify-content-between">
-                            <div class="section-title border-left-0 mb-0" style="width: 180px;">
-                                <h4 class="m-0 text-uppercase font-weight-bold">الأخبار العاجلة</h4>
-                            </div>
-                            <div class="owl-carousel tranding-carousel position-relative d-inline-flex align-items-center bg-white border border-right-0"
-                                style="width: calc(100% - 180px); padding-left: 100px;">
-                                {% for article in breaking_news %}
-                                <div class="text-truncate"><a class="text-secondary text-uppercase font-weight-semi-bold" href="{% url 'main_core:article_detail' article.slug %}">{{ article.title }}</a></div>
-                                {% endfor %}
-                            </div>
+                <div class="col-12">
+                    <div class="d-flex align-items-center bg-white shadow-sm rounded overflow-hidden">
+                    
+                    <!-- Title -->
+                    <div class="bg-danger text-white px-3 py-2 d-flex align-items-center" style="min-width: 180px;">
+                        <h5 class="m-0 text-uppercase font-weight-bold">الأخبار العاجلة</h5>
+                    </div>
+
+                    <!-- News Ticker -->
+                    <div class="owl-carousel tranding-carousel flex-grow-1 px-3"
+                        style="height: 45px; display: flex; align-items: center;">
+                        {% for article in breaking_news %}
+                        <div class="text-truncate" style="max-width: 100%;">
+                            <a class="text-dark font-weight-semi-bold" 
+                            href="{% url 'main_core:article_detail' article.slug %}">
+                            {{ article.title }}
+                            </a>
                         </div>
+                        {% empty %}
+                        <div class="text-muted">No breaking news available.</div>
+                        {% endfor %}
+                    </div>
+
                     </div>
                 </div>
+                </div>
             </div>
-        </div>
+            </div>
         <!-- نهاية الأخبار العاجلة -->
 
         <!-- الخبر مع الشريط الجانبي (عربي) -->
@@ -198,27 +210,40 @@
 {% else %}
 
 {% block content_en %}
-<!-- Breaking News -->
+<!-- Breaking News Start -->
 <div class="container-fluid mt-5 mb-3 pt-3" dir="ltr">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-12">
-                <div class="d-flex justify-content-between">
-                    <div class="section-title border-left-0 mb-0" style="width: 180px;">
-                        <h4 class="m-0 text-uppercase font-weight-bold">Breaking News</h4>
-                    </div>
-                    <div class="owl-carousel tranding-carousel position-relative d-inline-flex align-items-center bg-white border border-right-0"
-                        style="width: calc(100% - 180px); padding-left: 100px;">
-                        {% for article in breaking_news %}
-                        <div class="text-truncate"><a class="text-secondary text-uppercase font-weight-semi-bold" href="{% url 'main_core:article_detail' article.slug %}">{{ article.title }}</a></div>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-12">
+        <div class="d-flex align-items-center bg-white shadow-sm rounded overflow-hidden">
+          
+          <!-- Title -->
+          <div class="bg-danger text-white px-3 py-2 d-flex align-items-center" style="min-width: 180px;">
+            <h5 class="m-0 text-uppercase font-weight-bold">Breaking News</h5>
+          </div>
+
+          <!-- News Ticker -->
+          <div class="owl-carousel tranding-carousel flex-grow-1 px-3"
+               style="height: 45px; display: flex; align-items: center;">
+            {% for article in breaking_news %}
+              <div class="text-truncate" style="max-width: 100%;">
+                <a class="text-dark font-weight-semi-bold" 
+                   href="{% url 'main_core:article_detail' article.slug %}">
+                  {{ article.title }}
+                </a>
+              </div>
+            {% empty %}
+              <div class="text-muted">No breaking news available.</div>
+            {% endfor %}
+          </div>
+
         </div>
+      </div>
     </div>
+  </div>
 </div>
-<!-- End Breaking News -->
+<!-- Breaking News End -->
+
 
 <!-- News with Sidebar -->
 <div class="container-fluid" dir="ltr">
