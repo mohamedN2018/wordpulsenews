@@ -2,8 +2,6 @@
 {% load static %}
 {% load i18n %}
 
-
-
 {% if LANGUAGE_CODE == 'ar' %}
     {% block content_ar %}
         <!-- نهاية الأخبار العاجلة -->
@@ -137,32 +135,48 @@
                             </div>
                         </div>
 
-                    <!-- Popular News Start -->
-                    <div class="mb-3">
+                        <!-- Popular News Start (AR) -->
+                        <div class="mb-3" dir="rtl">
                         <div class="section-title mb-0">
-                            <h4 class="m-0 text-uppercase font-weight-bold">أخبار شائعة</h4>
+                        <h4 class="m-0 text-uppercase font-weight-bold">أخبار شائعة</h4>
                         </div>
                         <div class="bg-white border border-top-0 p-3">
-                            {% for NewsArticle in popular_articles %}
-                            <div class="d-flex align-items-center bg-white mb-3" style="height: 80px;">
-                                {% if NewsArticle.image %}
-                                <img alt="" class="img-fluid" style="height: 70px; width: 70px; object-fit: cover;" src="{{ NewsArticle.image.url }}"/>
-                                {% else %}
-                                <img alt="" class="img-fluid" style="height: 70px; width: 70px; object-fit: cover;" src="{% static 'img/news-110x110-1.jpg' %}">
-                                {% endif %}
-                                <div class="w-100 h-100 px-3 d-flex flex-column justify-content-center border border-left-0">
-                                    <div class="mb-1">
-                                        <a class="badge badge-primary text-uppercase font-weight-semi-bold p-1 mr-2" href="">{{ NewsArticle.category }}</a>
-                                        <a class="text-body" href=""><small>{{ NewsArticle.created_at|date:"d F, Y" }}</small></a>
-                                    </div>
-                                    <a class="text-body mb-0" href="{% url 'main_core:article_detail' NewsArticle.slug %}" 
-                                    style="font-size: 14px; font-weight: 500;">{{ NewsArticle.title }}</a>
-                                </div>
-                            </div>
-                            {% endfor %}
+                        {% for NewsArticle in popular_articles %}
+                        <div class="d-flex align-items-center bg-white mb-3 rounded shadow-sm overflow-hidden" style="height: 90px;">
+
+                        {% if NewsArticle.image %}
+                        <img alt="{{ NewsArticle.title }}" class="img-fluid flex-shrink-0 rounded" 
+                        style="height: 80px; width: 80px; object-fit: cover;" 
+                        src="{{ NewsArticle.image.url }}"/>
+                        {% else %}
+                        <img alt="{{ NewsArticle.title }}" class="img-fluid flex-shrink-0 rounded" 
+                        style="height: 80px; width: 80px; object-fit: cover;" 
+                        src="{% static 'img/news-110x110-1.jpg' %}">
+                        {% endif %}
+
+                        <div class="w-100 h-100 px-3 d-flex flex-column justify-content-center border border-right-0">
+                        <div class="mb-1 d-flex align-items-center flex-wrap">
+                        <a class="badge badge-primary text-uppercase font-weight-semi-bold p-1 mr-2" href="#">
+                        {{ NewsArticle.category }}
+                        </a>
+                        <small class="text-muted">
+                        <i class="fa fa-clock mr-1"></i> {{ NewsArticle.created_at|date:"d F, Y" }}
+                        </small>
                         </div>
-                    </div>
-                    <!-- Popular News End -->
+                        <a class="text-dark font-weight-bold text-truncate d-block" 
+                        style="font-size: 14px;" 
+                        href="{% url 'main_core:article_detail' NewsArticle.slug %}">
+                        {{ NewsArticle.title }}
+                        </a>
+                        </div>
+                        </div>
+                        {% empty %}
+                        <p class="text-muted text-center">لا توجد أخبار شائعة.</p>
+                        {% endfor %}
+                        </div>
+                        </div>
+                        <!-- Popular News End (AR) -->
+
                         <div class="mb-3">
                             <div class="section-title mb-0">
                                 <h4 class="m-0 text-uppercase font-weight-bold">التصنيفات</h4>
@@ -182,6 +196,7 @@
     {% endblock %}
 
 {% else %}
+
 {% block content_en %}
 <!-- Breaking News -->
 <div class="container-fluid mt-5 mb-3 pt-3" dir="ltr">
@@ -305,32 +320,48 @@
                     </div>
                 </div>
 
-                <!-- Popular News Start -->
-                <div class="mb-3">
+                <!-- Popular News Start (EN) -->
+                <div class="mb-3" dir="ltr">
                     <div class="section-title mb-0">
                         <h4 class="m-0 text-uppercase font-weight-bold">Popular News</h4>
                     </div>
                     <div class="bg-white border border-top-0 p-3">
                         {% for NewsArticle in popular_articles %}
-                        <div class="d-flex align-items-center bg-white mb-3" style="height: 80px;">
+                        <div class="d-flex align-items-center bg-white mb-3 rounded shadow-sm overflow-hidden" style="height: 90px;">
+                            
                             {% if NewsArticle.image %}
-                            <img alt="" class="img-fluid" style="height: 70px; width: 70px; object-fit: cover;" src="{{ NewsArticle.image.url }}"/>
+                            <img alt="{{ NewsArticle.title }}" class="img-fluid flex-shrink-0 rounded" 
+                                style="height: 80px; width: 80px; object-fit: cover;" 
+                                src="{{ NewsArticle.image.url }}"/>
                             {% else %}
-                            <img alt="" class="img-fluid" style="height: 70px; width: 70px; object-fit: cover;" src="{% static 'img/news-110x110-1.jpg' %}">
+                            <img alt="{{ NewsArticle.title }}" class="img-fluid flex-shrink-0 rounded" 
+                                style="height: 80px; width: 80px; object-fit: cover;" 
+                                src="{% static 'img/news-110x110-1.jpg' %}">
                             {% endif %}
+                            
                             <div class="w-100 h-100 px-3 d-flex flex-column justify-content-center border border-left-0">
-                                <div class="mb-1">
-                                    <a class="badge badge-primary text-uppercase font-weight-semi-bold p-1 mr-2" href="">{{ NewsArticle.category }}</a>
-                                    <a class="text-body" href=""><small>{{ NewsArticle.created_at|date:"d F, Y" }}</small></a>
+                                <div class="mb-1 d-flex align-items-center flex-wrap">
+                                    <a class="badge badge-primary text-uppercase font-weight-semi-bold p-1 mr-2" href="#">
+                                        {{ NewsArticle.category }}
+                                    </a>
+                                    <small class="text-muted">
+                                        <i class="fa fa-clock mr-1"></i> {{ NewsArticle.created_at|date:"M d, Y" }}
+                                    </small>
                                 </div>
-                                <a class="text-body mb-0" href="{% url 'main_core:article_detail' NewsArticle.slug %}" 
-                                style="font-size: 14px; font-weight: 500;">{{ NewsArticle.title }}</a>
+                                <a class="text-dark font-weight-bold text-truncate d-block" 
+                                style="font-size: 14px;" 
+                                href="{% url 'main_core:article_detail' NewsArticle.slug %}">
+                                    {{ NewsArticle.title }}
+                                </a>
                             </div>
                         </div>
+                        {% empty %}
+                        <p class="text-muted text-center">No popular news available.</p>
                         {% endfor %}
                     </div>
                 </div>
-                <!-- Popular News End -->
+                <!-- Popular News End (EN) -->
+
 
                 <div class="mb-3">
                     <div class="section-title mb-0">

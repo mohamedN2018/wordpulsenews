@@ -18,9 +18,25 @@ import json
 from django.http import JsonResponse
 from openai import OpenAI
 from decouple import config
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
 import os
+# -*- coding: utf-8 -*-
+import json
+import logging
+import sys
+import io
 
-client = OpenAI(api_key=config("OPENAI_API_KEY"))
+# تأكد من أن stdout/stderr يكتبوا بــ UTF-8 (لتجنب مشاكل print/log في بعض البيئات)
+# نستخدم errors='replace' لتجنب انهيار لو في حرف غريب
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
+
+logger = logging.getLogger(__name__)
+
+
+# client = OpenAI(api_key=settings.OPENAI_API_KEY)
+client = OpenAI(api_key=getattr(settings, "OPENAI_API_KEY", None))
 
 def home(request, category_slug=None):
     photos = FlickrPhoto.objects.all().order_by('-created_at')[:12]  # آخر 6 صور
@@ -222,6 +238,7 @@ def unique_slug(title):
         num += 1
     return slug
 
+@require_http_methods(["GET", "POST"])
 def generate_ai_article(request, category_slug):
     photos = FlickrPhoto.objects.all().order_by('-created_at')[:12]
     categories = NewsCategory.objects.all()
@@ -230,41 +247,75 @@ def generate_ai_article(request, category_slug):
     category = get_object_or_404(NewsCategory, slug=category_slug)
     popular_articles = NewsArticle.objects.order_by('-views')[:6]
 
+    try:
+        # كود استدعاء الذكاء الاصطناعي
+        ...
+    except Exception as e:
+        import traceback
+        print("❌ AI Error:", str(e))           # يطبع الخطأ البسيط
+        print(traceback.format_exc())           # يطبع الـ stacktrace كامل
+        return JsonResponse({
+            "error": "حدث خطأ أثناء توليد المقال. راجع اللوج في السيرفر."
+        }, json_dumps_params={'ensure_ascii': False})
+
     if request.method == "POST":
         try:
+            # تحقق سريع من المفتاح
+            if not getattr(settings, "OPENAI_API_KEY", None):
+                messages.error(request, "خطأ: مفتاح OpenAI غير مضبوط في الإعدادات.")
+                return redirect(request.path)
+
             prompt = f"""
-            اكتب مقال احترافي عن مجال: {category.name}.
-            ارجع النتيجة كـ JSON بالصيغة التالية فقط:
+            اكتب مقال احترافي ومرتب مع عناوين فرعية وفقرات قصيرة عن مجال: {category.name}.
+            أعد النتيجة بصيغة JSON فقط بالشكل التالي:
             {{
                 "title": "عنوان قصير وجذاب",
-                "content": "المقال هنا..."
+                "content": "المقال هنا مع فقرات وعناوين فرعية"
             }}
             """
 
+            # استدعاء API
             response = client.chat.completions.create(
                 model="gpt-4o-mini",
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.7,
+                response_format={"type": "json_object"},  # نحاول نضمن JSON
             )
 
-            ai_text = response.choices[0].message.content.strip()
+            # استخرج المحتوى من الرد
+            ai_content_raw = response.choices[0].message.content
 
-            # نحاول نفك JSON
-            try:
-                data = json.loads(ai_text)
-                ai_title = data.get("title", "").strip()
-                ai_content = data.get("content", "").strip()
-            except json.JSONDecodeError:
-                ai_title = f"مقال عن {category.name}"
-                ai_content = ai_text
+            # بعض نسخ للمكتبة ممكن ترجع dict بدل str — نعالجه بأمان
+            if isinstance(ai_content_raw, dict):
+                data = ai_content_raw
+            else:
+                # لو هو بايتات → نفكها بصيغة utf-8
+                if isinstance(ai_content_raw, bytes):
+                    ai_content_raw = ai_content_raw.decode('utf-8', errors='replace')
 
-            from .utils import unique_slug
-            slug = unique_slug(ai_title)
+                # الآن ai_content_raw يُفترض أنه str
+                # نعمل محاولة لتحويله إلى JSON
+                try:
+                    data = json.loads(ai_content_raw)
+                except Exception as parse_exc:
+                    # لو فشل التحليل، نخزن النص كـ محتوى احتياطي
+                    logger.warning("Failed to parse AI JSON response; using raw text. parse_exc=%s", parse_exc)
+                    data = {"title": f"مقال عن {category.name}", "content": str(ai_content_raw)}
 
+            # ضمان أن الحقول نصوص (str) وبترميز utf-8
+            ai_title = str(data.get("title", "")).strip()
+            ai_content = str(data.get("content", "")).strip()
+
+            # توليد slug فريد
+            slug = unique_slug(ai_title or f"مقال-{category.name}")
+
+            # تحقق من وجود admin
             admin_user = User.objects.filter(is_superuser=True).first()
             if not admin_user:
-                raise ValueError("⚠️ لازم يكون فيه مستخدم admin في قاعدة البيانات!")
+                messages.error(request, "خطأ: لازم يكون موجود مستخدم Admin في قاعدة البيانات.")
+                return redirect(request.path)
 
+            # حفظ المقال
             article, created = NewsArticle.objects.get_or_create(
                 slug=slug,
                 defaults={
@@ -275,19 +326,26 @@ def generate_ai_article(request, category_slug):
                 }
             )
 
-            return JsonResponse(
-                {"title": ai_title, "content": ai_content, "slug": article.slug},
-                json_dumps_params={'ensure_ascii': False}  # ✅ الحل
-            )
+            if created:
+                messages.success(request, "✅ تم توليد المقال وحفظه بنجاح.")
+            else:
+                messages.info(request, "ℹ️ المقال موجود بالفعل وتم عرضه.")
+
+            # Redirect لتفادي repost عند تحديث الصفحة
+            return redirect(request.path)
 
         except Exception as e:
-            return JsonResponse(
-                {"error": f"خطأ أثناء توليد المقال: {str(e)}"},
-                status=500,
-                json_dumps_params={'ensure_ascii': False}  # ✅ مهم جداً
-            )
+            # لا تستخدم print(e) بدون ضبط stdout — استخدم logger.exception
+            logger.exception("Error generating AI article")
+            # أعرض رسالة صديقة للمستخدم (تأكد أن الرسالة لا تفحص encoding عند طباعتها)
+            messages.error(request, "حدث خطأ أثناء توليد المقال. راجع اللوج في السيرفر.")
+            return redirect(request.path)
 
-    # GET
+    # GET: جلب المقالات بالقسم لعرضها
+    articles = NewsArticle.objects.filter(category=category).order_by('-created_at')
+
+
+
     context = {
         "category": category,
         "photos": photos,
@@ -295,10 +353,9 @@ def generate_ai_article(request, category_slug):
         "information": information,
         "icon": icon,
         "popular_articles": popular_articles,
+        "articles": articles,
     }
     return render(request, "generate_ai_article.html", context)
-
-
 
 
 # ✅ توليد مقال كامل (عنوان + محتوى) باستخدام AI

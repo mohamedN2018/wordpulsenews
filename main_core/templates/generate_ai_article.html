@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 
+
 {% if LANGUAGE_CODE == 'ar' %}
   {% block content_ar %}
     <div class="container my-5">
@@ -23,11 +24,28 @@
                 </button>
               </div>
           </form>
+               <div class="automated-section">
+            <h3>📝 Generate Article with AI in: {{ category.name }}</h3>
+
+          <form method="post">
+              {% csrf_token %}
+              <button type="submit">✨ Generate Article with AI</button>
+          </form>
+
+          {% if generated_article %}
+              <div class="article">
+                  <h2>{{ generated_article.title }}</h2>
+                  <p>{{ generated_article.content|linebreaks }}</p>
+              </div>
+          {% endif %}
+      </div>
+
       </div>
     </div>
   {% endblock %}
 {% else %}
   {% block content_en %}
+
     <div class="container my-5">
       <div class="card shadow-lg border-0 rounded-3 p-4 bg-body-tertiary">
           <h3 class="fw-bold mb-4 text-primary-emphasis text-center">
@@ -49,7 +67,27 @@
                 </button>
               </div>
           </form>
+          <hr>
+
+      <div class="automated-section">
+            <h3>📝 Generate Article with AI in: {{ category.name }}</h3>
+
+          <form method="post">
+              {% csrf_token %}
+              <button type="submit">✨ Generate Article with AI</button>
+          </form>
+
+          {% if generated_article %}
+              <div class="article">
+                  <h2>{{ generated_article.title }}</h2>
+                  <p>{{ generated_article.content|linebreaks }}</p>
+              </div>
+          {% endif %}
+      </div>
+
+
       </div>
     </div>
   {% endblock %}
-{% endif %}
+{% endif %} 
+
